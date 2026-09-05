@@ -1,0 +1,333 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>查詢</title>
+        <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+        <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+        <script>
+        // 初始化 vConsole, for debug
+        var vConsole = new window.VConsole();
+      </script>
+     <style>
+        /* 全域樣式重設，營造專業素雅氛圍 */
+        body {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", "Noto Sans TC", sans-serif;
+          background-color: #f4f6f8; /* 霧面灰白底色 */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+
+        /* 外層卡片容器 */
+        .container {
+          background-color: #ffffff;
+          padding: 2.5rem;
+          border-radius: 12px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          width: 90%;          /* 行動裝置上預留左右邊距 */
+          max-width: 480px;    /* 電腦版限制最大寬度，避免過寬 */
+          text-align: center;
+        }
+
+        h2 {
+          color: #1f3a52;      /* 深英倫藍 */
+          margin-bottom: 1.5rem;
+          font-size: 1.5rem;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+
+        /* 表單佈局 */
+        .form-group {
+          display: flex;
+          flex-direction: column; /* 預設在手機上垂直排列 */
+          gap: 12px;
+        }
+
+        /* 輸入框樣式 */
+        .input-box {
+          padding: 14px 16px;
+          border: 1px solid #dcdcdc;
+          border-radius: 6px;
+          font-size: 1rem;
+          outline: none;
+          transition: border-color 0.3s ease;
+          color: #333333;
+        }
+
+        .input-box:focus {
+          border-color: #1f3a52; /* 聚焦時變深藍 */
+          box-shadow: 0 0 0 3px rgba(31, 58, 82, 0.1);
+        }
+
+        /* 按鈕樣式 */
+        .submit-btn {
+          padding: 14px 20px;
+          background-color: #1f3a52; /* 專業深藍 */
+          color: #ffffff;
+          border: none;
+          border-radius: 6px;
+          font-size: 1rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        .submit-btn:hover {
+          background-color: #15293a; /* 滑過時加深 */
+        }
+
+        .submit-btn:active {
+          transform: scale(0.98); /* 點擊時的下壓反饋 */
+        }
+
+        /* ── RWD 響應式優化 (針對平板與電腦螢幕) ── */
+        @media (min-width: 576px) {
+          .form-group {
+            flex-direction: row; /* 在寬螢幕上橫向並排，更流暢 */
+          }
+          
+          .input-box {
+            flex: 1; /* 讓輸入框自動填滿剩餘空間 */
+          }
+
+          .submit-btn {
+            width: auto; /* 按鈕寬度由文字決定 */
+            min-width: 100px;
+          }
+        }
+        /* 將 select 的樣式與 input-box 完全統一 */
+        select.input-box {
+            appearance: none;          /* 移除瀏覽器預設的下拉箭頭樣式 */
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231F3A52%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px top 50%;
+            background-size: 10px auto;
+            cursor: pointer;
+            }
+
+            /* 確保 disabled 狀態的文字顏色也不會太淺 */
+            select.input-box:disabled {
+            background-color: #f9f9f9;
+            cursor: not-allowed;
+        }
+        /* 日期輸入框樣式優化 */
+        input[type="date"].input-box {
+            padding: 14px 16px;
+            /* 確保在 Safari/Chrome 上字體一致 */
+            font-family: inherit;
+            color: #333333;
+        }
+
+        /* 讓日期輸入框在未選擇時顯示灰色提示字色，選擇後顯示深色 */
+        input[type="date"].input-box:invalid {
+            color: #999;
+        }
+
+        /* Label 標籤樣式 */
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #1f3a52; /* 與標題同色系 */
+            margin-bottom: 5px;
+            font-weight: 500;
+            text-align: left;
+            margin-top: 10px; /* 與上方元素保持距離 */
+        }
+
+        /* 調整原本的 flexbox 結構，讓標籤能正確對應欄位 */
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 100%;
+        }
+
+        /* ── 專屬優雅風成功畫面樣式 ── */
+        .success-wrapper {
+          padding: 1.5rem 0;
+          animation: elegantFadeIn 0.6s ease forwards;
+        }
+        .success-icon-box {
+          width: 70px;
+          height: 70px;
+          margin: 0 auto 1.5rem auto;
+          border: 2px solid #d4af37; /* 古銅金細線條邊框 */
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .success-icon {
+          color: #d4af37; /* 古銅金勾勾 */
+          font-size: 2rem;
+          font-weight: 300;
+        }
+        .success-title {
+          color: #1f3a52;
+          font-size: 1.4rem;
+          font-weight: 600;
+          letter-spacing: 1px;
+          margin-bottom: 0.75rem;
+        }
+        .success-text {
+          color: #778899; /* 雅致輕灰 */
+          font-size: 0.95rem;
+          letter-spacing: 0.5px;
+        }
+        .countdown-num {
+          color: #1f3a52;
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin: 0 2px;
+        }
+
+        /* 淡入動畫 */
+        @keyframes elegantFadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── RWD 平板與電腦螢幕適應 ── */
+        @media (min-width: 576px) {
+          .form-group { flex-direction: row; }
+          .input-box { flex: 1; }
+          .submit-btn { width: auto; min-width: 100px; }
+          .success-wrapper { padding: 2.5rem 0; } /* 寬螢幕加大留白營造精品感 */
+        }
+
+      </style>
+    </head>
+    <body>
+        <div class="container" id="mainContainer">
+        <h2>請輸入員工資訊</h2>
+        <div class="form-group">
+        <input type="text" class="input-box" id="employeeID" placeholder="請輸入員工代號">
+        <input type="text" class="input-box" id="employeeName" placeholder="請輸入姓名">
+      
+        <div class="field-container">
+            <label class="form-label">職階</label>
+            <select class="input-box" id="position">
+                <option value="工程師">工程師</option>
+                <option value="高級工程師">高級工程師</option>
+                <option value="管理師">管理師</option>
+                <option value="高級管理師">高級管理師</option>
+            </select>
+        </div>
+
+        <div class="field-container">
+            <label class="form-label">入職日</label>
+            <input type="date" class="input-box" id="onBoardingDate">
+        </div>
+
+        <button class="submit-btn" id="submitBtn" style="margin-top: 20px;">送出回報</button>
+        </div>
+        </div>
+
+        <script>
+            // 取得今天的日期
+            const today = new Date();
+      
+            // 格式化為 YYYY-MM-DD
+            // getMonth() 回傳的是 0-11，所以要 +1
+            // padStart(2, '0') 確保 6 月會變成 06
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+      
+            const formattedToday = `${yyyy}-${mm}-${dd}`;
+      
+            // 設定到 input 中
+            document.getElementById('onBoardingDate').value = formattedToday;
+
+            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_f6DdxVE7iUFgn_G1hB-inHrmHDGhDLzRxoSiKObDg5kU4SEATryQ-fggaG1T1wiQ/exec";        
+            const LIFF_ID = '2010444532-KnMHqwPB'; // 從 LINE Developers Console 取得
+
+            liff.init({ liffId: LIFF_ID }).then(() => {
+                console.log("LIFF 已初始化");
+            });
+
+            document.getElementById('submitBtn').addEventListener('click', async () => {
+                // 1. 確保使用者已登入
+                if (!liff.isLoggedIn()) { liff.login(); }
+
+                // 2. 獲取使用者個人資料
+                const profile = await liff.getProfile();
+
+                // 3. 準備要打包送過去的資料
+                const payload = {
+                    userId: profile.userId,
+                    userName: profile.displayName,
+                    employeeID: document.getElementById('employeeID').value,
+                    employeeName: document.getElementById('employeeName').value,
+                    onBoardingdate: document.getElementById('onBoardingDate').value,
+                    position: document.getElementById('position').value,
+                    timestamp: new Date()
+                };
+
+                const response = await fetch(GAS_WEB_APP_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload),
+                    headers: {
+                    // 注意：為了避免跨域(CORS)預檢請求失敗，在 GAS 實務中通常用 plain text 傳輸 JSON 字串
+                    "Content-Type": "text/plain;charset=utf-8" 
+                    }
+                });
+
+                const responseData = await response.text();
+
+                if (response.status === 200) {
+                    console.log("後端儲存成功！");
+                    showSuccessAndClose();
+                } else {
+                    throw new Error(response.message);
+                }
+            });
+
+
+        function showSuccessAndClose() {
+          console.log("begin showSuccessAndClose");
+          const container = document.getElementById('mainContainer');
+          
+          // 將卡片內部替換為古銅金細線風的成功語系
+          container.innerHTML = `
+            <div class="success-wrapper">
+              <div class="success-icon-box">
+                <span class="success-icon">✓</span>
+              </div>
+              <div class="success-title">會員資料綁定成功</div>
+              <div class="success-text">
+                安全連線已建立，視窗將於 
+                <span id="countdown" class="countdown-num">3</span> 
+                秒後自動關閉
+              </div>
+            </div>
+          `;
+
+          let seconds = 3;
+          const countdownEl = document.getElementById('countdown');
+
+          const timer = setInterval(() => {
+            seconds--;
+            if (countdownEl) countdownEl.textContent = seconds;
+
+            if (seconds <= 0) {
+              clearInterval(timer);
+              // 呼叫 LINE SDK 關閉網頁
+              if (typeof liff !== 'undefined' && liff.closeWindow) {
+                liff.closeWindow();
+              } else {
+                console.log("LIFF closeWindow 觸發 (非 LINE 環境)");
+              }
+            }
+          }, 1000);
+        }
+        </script>
+    </body>
+    </html>
