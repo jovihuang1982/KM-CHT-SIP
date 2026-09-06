@@ -264,13 +264,13 @@
 
                 // 3. 準備要打包送過去的資料
                 const payload = {
-                    userId: profile.userId,
-                    userName: profile.displayName,
-                    employeeID: document.getElementById('employeeID').value,
-                    employeeName: document.getElementById('employeeName').value,
-                    onBoardingdate: document.getElementById('onBoardingDate').value,
-                    position: document.getElementById('position').value,
-                    timestamp: new Date()
+                    // userId: profile.userId,
+                    // userName: profile.displayName,
+                    // employeeID: document.getElementById('employeeID').value,
+                    // employeeName: document.getElementById('employeeName').value,
+                    // onBoardingdate: document.getElementById('onBoardingDate').value,
+                    // position: document.getElementById('position').value,
+                    // timestamp: new Date()
                 };
 
                 const response = await fetch(GAS_WEB_APP_URL, {
@@ -278,7 +278,7 @@
                     body: JSON.stringify(payload),
                     headers: {
                     // 注意：為了避免跨域(CORS)預檢請求失敗，在 GAS 實務中通常用 plain text 傳輸 JSON 字串
-                    "Content-Type": "application/json;charset=utf-8" 
+                    "Content-Type": "text/plain;charset=utf-8" 
                     }
                 });
 
