@@ -260,6 +260,8 @@
                 // 2. 獲取使用者個人資料
                 const profile = await liff.getProfile();
 
+                console.log(profile);
+
                 // 3. 準備要打包送過去的資料
                 const payload = {
                     userId: profile.userId,
