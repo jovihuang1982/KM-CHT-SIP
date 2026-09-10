@@ -206,24 +206,18 @@
     </head>
     <body>
         <div class="container" id="mainContainer">
-        <h2>請輸入員工資訊</h2>
+        <h2>請輸入報修資訊</h2>
         <div class="form-group">
-        <input type="text" class="input-box" id="employeeID" placeholder="請輸入員工代號">
-        <input type="text" class="input-box" id="employeeName" placeholder="請輸入姓名">
+        <input type="text" class="input-box" id="phone" placeholder="請輸入員工網路電話分機">
+        <input type="text" class="input-box" id="department" placeholder="請輸入單位">
+        <input type="text" class="input-box" id="contact" placeholder="請輸入 - 聯絡人姓名/電話">
       
         <div class="field-container">
             <label class="form-label">職階</label>
-            <select class="input-box" id="position">
-                <option value="工程師">工程師</option>
-                <option value="高級工程師">高級工程師</option>
-                <option value="管理師">管理師</option>
-                <option value="高級管理師">高級管理師</option>
+            <select class="input-box" id="issueType">
+                <option value="更改共振群組">更改共振群組</option>
+                <option value="話機障礙">話機障礙</option>
             </select>
-        </div>
-
-        <div class="field-container">
-            <label class="form-label">入職日</label>
-            <input type="date" class="input-box" id="onBoardingDate">
         </div>
 
         <button class="submit-btn" id="submitBtn" style="margin-top: 20px;">送出回報</button>
