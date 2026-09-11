@@ -208,7 +208,7 @@
         <div class="container" id="mainContainer">
         <h2>請輸入報修資訊</h2>
         <div class="form-group">
-        <input type="text" class="input-box" id="phone" placeholder="請輸入員工網路電話分機">
+        <input type="text" class="input-box" id="phone" placeholder="請輸入網路電話分機">
         <input type="text" class="input-box" id="department" placeholder="請輸入單位">
         <input type="text" class="input-box" id="contact" placeholder="請輸入 - 聯絡人姓名/電話">
       
@@ -218,6 +218,14 @@
                 <option value="更改共振群組">更改共振群組</option>
                 <option value="話機障礙">話機障礙</option>
             </select>
+        </div>
+
+
+        <div class="field-container">
+            <label for="description">障礙描述(選項):</label>
+            <textarea id="description" name="description" rows="4" cols="50">
+                請簡述您遇到的問題
+            </textarea>
         </div>
 
         <button class="submit-btn" id="submitBtn" style="margin-top: 20px;">送出回報</button>
