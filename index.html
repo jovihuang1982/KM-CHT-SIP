@@ -97,6 +97,11 @@
             flex: 1; /* 讓輸入框自動填滿剩餘空間 */
           }
 
+          /* 讓描述欄位在寬螢幕時佔滿整行 */
+          .field-container.full-width {
+            width: 100%;
+          }
+
           .submit-btn {
             width: auto; /* 按鈕寬度由文字決定 */
             min-width: 100px;
@@ -220,12 +225,10 @@
             </select>
         </div>
 
-
-        <div class="field-container">
-            <label for="description">障礙描述(選項):</label>
-            <textarea id="description" name="description" rows="4" cols="50">
-                請簡述您遇到的問題
-            </textarea>
+        <!-- 新增的障礙描述多行輸入框 -->
+        <div class="field-container full-width">
+            <label class="form-label" for="description">障礙描述(選項)</label>
+            <textarea class="input-box" id="description" name="description" rows="3" placeholder="請簡述您遇到的問題..."></textarea>
         </div>
 
         <button class="submit-btn" id="submitBtn" style="margin-top: 20px;">送出回報</button>
