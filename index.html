@@ -248,7 +248,7 @@
       
             const formattedToday = `${yyyy}-${mm}-${dd}`;
 
-            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz9Xr98mzeh35J2zHQy9_YfQecn-gGMtH_gK6Wof8OOtL_YsaEVeo0W9a3n_bn6A_KS0g/exec";        
+            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyQgVJJePdH3M_2vtMjXucG473gq8fHj6GjOFGi7EhUsyZXu0h2tRuLdjlsWUBPjGLgXg/exec";        
             const LIFF_ID = '2011447440-TpOhGOzi'; // 從 LINE Developers Console 取得
 
             liff.init({ liffId: LIFF_ID }).then(() => {
@@ -267,12 +267,12 @@
                 // 3. 準備要打包送過去的資料
                 const payload = {
                     userId: profile.userId,
-                    userName: profile.displayName,
-                    phone: document.getElementById('phone').value,
-                    department: document.getElementById('department').value,
-                    contact: document.getElementById('contact').value,
-                    issueType: document.getElementById('issueType').value,
-                    description: document.getElementById('description').value
+                    userName: profile.displayName
+                    // phone: document.getElementById('phone').value,
+                    // department: document.getElementById('department').value,
+                    // contact: document.getElementById('contact').value,
+                    // issueType: document.getElementById('issueType').value,
+                    // description: document.getElementById('description').value
                     // issueTime: formattedToday
                 };
 
