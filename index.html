@@ -296,7 +296,7 @@
                         showSuccessAndClose(); // 實務上若後端確定都有收到，可直接走成功流程
                     }
                 } catch (err) {
-                    console.log(response);
+                    console.log(response.status);
                     // 這裡專門抓取瀏覽器因 302 或 CORS 造成的 Load failed 假性報錯
                     console.warn("捕捉到前端 Fetch 攔截的 Load failed，但後端可能已處理:", err);
                     // 因為你觀察到後端其實都有成功，如果使用者體驗優先，這裡可以直接放行讓它顯示成功並關閉
