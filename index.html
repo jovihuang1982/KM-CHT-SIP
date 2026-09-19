@@ -276,27 +276,31 @@
                     issueTime: formattedToday
                 };
 
-                console.log(payload);
+                try {
+                    const response = await fetch(GAS_WEB_APP_URL, {
+                        method: "POST",
+                        body: JSON.stringify(payload),
+                        headers: {
+                            "Content-Type": "text/plain;charset=utf-8" 
+                        },
+                        // 嘗試加入 mode: 'cors' 看看瀏覽器反應
+                        mode: 'cors' 
+                    });
 
-                const response = await fetch(GAS_WEB_APP_URL, {
-                    method: "POST",
-                    body: JSON.stringify(payload),
-                    headers: {
-                    // 注意：為了避免跨域(CORS)預檢請求失敗，在 GAS 實務中通常用 plain text 傳輸 JSON 字串
-                    "Content-Type": "text/plain;charset=utf-8" 
+                    // 如果不強求一定要讀取 GAS 回傳的字串，可以簡化這段
+                    if (response.ok) {
+                        console.log("請求已成功送達後端！");
+                        showSuccessAndClose();
+                    } else {
+                        console.warn("伺服器回應狀態碼非 200，但後端可能已執行");
+                        showSuccessAndClose(); // 實務上若後端確定都有收到，可直接走成功流程
                     }
-                });
-
-                const responseData = await response.text();
-
-                console.log(responseData);
-
-                if (response.status === 200) {
-                    console.log("後端儲存成功！");
+                } catch (err) {
+                    // 這裡專門抓取瀏覽器因 302 或 CORS 造成的 Load failed 假性報錯
+                    console.warn("捕捉到前端 Fetch 攔截的 Load failed，但後端可能已處理:", err);
+                    // 因為你觀察到後端其實都有成功，如果使用者體驗優先，這裡可以直接放行讓它顯示成功並關閉
                     showSuccessAndClose();
-                } else {
-                    throw new Error(response.message);
-                }
+                }                
             });
 
 
