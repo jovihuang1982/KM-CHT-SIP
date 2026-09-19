@@ -250,7 +250,7 @@
       
             const formattedToday = `${yyyy}-${mm}-${dd}-${hour}:${minutes}`;
 
-            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwOJNX3Qu7l4v6l3P1reANjYsAbCxkNYHPVwUy47BJmac0_y2yT_Nv3oPaM57-I1yOEew/exec";        
+            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzJK6vEgGkkO7hOr6dLcztTDyl9Jzs_R75TT5ESNIOTipWJN4q9fif4--Jdk-Jo6xLV3g/exec";        
             const LIFF_ID = '2011447440-TpOhGOzi'; // 從 LINE Developers Console 取得
 
             liff.init({ liffId: LIFF_ID }).then(() => {
@@ -283,7 +283,7 @@
                     body: JSON.stringify(payload),
                     headers: {
                     // 注意：為了避免跨域(CORS)預檢請求失敗，在 GAS 實務中通常用 plain text 傳輸 JSON 字串
-                    "Content-Type": "application/json;charset=utf-8" 
+                    "Content-Type": "text/plain;charset=utf-8" 
                     }
                 });
 
