@@ -287,7 +287,7 @@
                         mode: 'cors' 
                     });
 
-                    console.log('response: ' + response);
+                    console.log('response: ' + response.json());
 
                     // 如果不強求一定要讀取 GAS 回傳的字串，可以簡化這段
                     if (response.ok) {
@@ -298,7 +298,7 @@
                         showSuccessAndClose(); // 實務上若後端確定都有收到，可直接走成功流程
                     }
                 } catch (err) {
-                    console.error("捕捉到錯誤:", error);
+                    console.error("捕捉到錯誤:", err);
                     showSuccessAndClose();
                     // 🔍 關鍵：精準判斷這是不是 LINE / 瀏覽器特有的 Load failed 假性報錯
                     // 同時確認後端其實已經有順利運作（你的經驗是後端每次都會正常打出去）
