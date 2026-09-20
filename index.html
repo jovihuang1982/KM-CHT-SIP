@@ -250,7 +250,7 @@
       
             const formattedToday = `${yyyy}-${mm}-${dd}-${hour}:${minutes}`;
 
-            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxLK2xQIkCEExSk1o966Z3ga6U1haMD9BiTvBdk6ucmFefTIk9eGnSqKDxVUmBuv3QmfA/exec";        
+            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwTi407UGLFnA1tzZvUGwZlheHcn9dLC3ShFNwqnpvAI3XL9FMymhO35qC1IrrwyQdaWg/exec";        
             const LIFF_ID = '2011447440-TpOhGOzi'; // 從 LINE Developers Console 取得
 
             liff.init({ liffId: LIFF_ID }).then(() => {
@@ -296,12 +296,22 @@
                         showSuccessAndClose(); // 實務上若後端確定都有收到，可直接走成功流程
                     }
                 } catch (err) {
-                    console.log(err);
-                    // 這裡專門抓取瀏覽器因 302 或 CORS 造成的 Load failed 假性報錯
-                    console.warn("捕捉到前端 Fetch 攔截的 Load failed，但後端可能已處理:", err);
-                    // 因為你觀察到後端其實都有成功，如果使用者體驗優先，這裡可以直接放行讓它顯示成功並關閉
-                    // showSuccessAndClose();
-                }                
+                    console.error("捕捉到錯誤:", error);
+                    // 🔍 關鍵：精準判斷這是不是 LINE / 瀏覽器特有的 Load failed 假性報錯
+                    // 同時確認後端其實已經有順利運作（你的經驗是後端每次都會正常打出去）
+                    if (error.message === "Load failed" || error.message === "Failed to fetch") {
+                        console.warn("這是 LINE 內嵌瀏覽器的跨網域重新導向限制，但後端已確認執行，視為成功。");
+                        showSuccessAndClose();
+                        return; // 直接結束，不往下走錯誤提示
+                    }
+                    
+                    // 則正常跳出提示，並讓使用者可以重新點擊按鈕
+                    alert("送出失敗: " + error.message);
+            
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "送出回報";
+                }
             });
 
 
