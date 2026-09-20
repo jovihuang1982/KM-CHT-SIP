@@ -287,8 +287,6 @@
                         mode: 'cors' 
                     });
 
-                    console.log('response: ' + response.json());
-
                     // 如果不強求一定要讀取 GAS 回傳的字串，可以簡化這段
                     if (response.ok) {
                         console.log("請求已成功送達後端！");
@@ -302,7 +300,7 @@
                     // showSuccessAndClose();
                     // 🔍 關鍵：精準判斷這是不是 LINE / 瀏覽器特有的 Load failed 假性報錯
                     // 同時確認後端其實已經有順利運作（你的經驗是後端每次都會正常打出去）
-                    if (error.message === "Type error") {
+                    if (error.message === "Load failed") {
                         console.warn("這是 LINE 內嵌瀏覽器的跨網域重新導向限制，但後端已確認執行，視為成功。");
                         showSuccessAndClose();
                         return; // 直接結束，不往下走錯誤提示
