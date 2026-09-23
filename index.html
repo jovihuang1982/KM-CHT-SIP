@@ -322,20 +322,21 @@
                         showSuccessAndClose();
                         return; // 直接結束，不往下走錯誤提示
                     }
-
-                    loadingOverlay.style.display = 'none';
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "送出回報";
                 }
             });
 
 
         function showSuccessAndClose() {
-          console.log("begin showSuccessAndClose");
-          const container = document.getElementById('mainContainer');
-          
-          // 將卡片內部替換為古銅金細線風的成功語系
-          container.innerHTML = `
+            const submitBtn = document.getElementById('submitBtn');
+            loadingOverlay.style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.innerText = "送出回報";
+            
+            console.log("begin showSuccessAndClose");
+            const container = document.getElementById('mainContainer');
+            
+            // 將卡片內部替換為古銅金細線風的成功語系
+            container.innerHTML = `
             <div class="success-wrapper">
               <div class="success-icon-box">
                 <span class="success-icon">✓</span>
