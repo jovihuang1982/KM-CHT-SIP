@@ -206,6 +206,11 @@
           .submit-btn { width: auto; min-width: 100px; }
           .success-wrapper { padding: 2.5rem 0; } /* 寬螢幕加大留白營造精品感 */
         }
+         
+         @keyframes spin {
+             0% { transform: rotate(0deg); }
+             100% { transform: rotate(360deg); }
+         }
 
       </style>
     </head>
@@ -234,6 +239,11 @@
         <button class="submit-btn" id="submitBtn" style="margin-top: 20px;">送出回報</button>
         </div>
         </div>
+        
+        <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-family: sans-serif;">
+            <div style="border: 4px solid #f3f3f3; border-top: 4px solid #06C755; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+            <p style="margin-top: 15px; font-size: 16px; font-weight: bold;">正在傳送中，請稍候...</p>
+        </div>
 
         <script>
             // 取得今天的日期
@@ -258,25 +268,33 @@
             });
 
             document.getElementById('submitBtn').addEventListener('click', async () => {
-                // 1. 確保使用者已登入
-                if (!liff.isLoggedIn()) { liff.login(); }
-
-                // 2. 獲取使用者個人資料
-                const profile = await liff.getProfile();
-
-                // 3. 準備要打包送過去的資料
-                const payload = {
-                    userId: profile.userId,
-                    userName: profile.displayName,
-                    phone: document.getElementById('phone').value,
-                    department: document.getElementById('department').value,
-                    contact: document.getElementById('contact').value,
-                    issueType: document.getElementById('issueType').value,
-                    description: document.getElementById('description').value,
-                    issueTime: formattedToday
-                };
+                const submitBtn = document.getElementById('submitBtn');
+                const loadingOverlay = document.getElementById('loadingOverlay');
 
                 try {
+                    // 1. 確保使用者已登入
+                    if (!liff.isLoggedIn()) { liff.login(); }
+
+                    // 2. 立即顯示全螢幕轉場 Loading，並鎖定按鈕（防止重複點擊）
+                    loadingOverlay.style.display = 'flex';
+                    submitBtn.disabled = true;
+                    submitBtn.innerText = "處理中...";
+
+                    // 2. 獲取使用者個人資料
+                    const profile = await liff.getProfile();
+
+                    // 3. 準備要打包送過去的資料
+                    const payload = {
+                        userId: profile.userId,
+                        userName: profile.displayName,
+                        phone: document.getElementById('phone').value,
+                        department: document.getElementById('department').value,
+                        contact: document.getElementById('contact').value,
+                        issueType: document.getElementById('issueType').value,
+                        description: document.getElementById('description').value,
+                        issueTime: formattedToday
+                    };
+
                     const response = await fetch(GAS_WEB_APP_URL, {
                         method: "POST",
                         body: JSON.stringify(payload),
@@ -287,7 +305,6 @@
                         mode: 'cors' 
                     });
 
-                    // 如果不強求一定要讀取 GAS 回傳的字串，可以簡化這段
                     if (response.ok) {
                         console.log("請求已成功送達後端！");
                         showSuccessAndClose();
@@ -305,6 +322,10 @@
                         showSuccessAndClose();
                         return; // 直接結束，不往下走錯誤提示
                     }
+
+                    loadingOverlay.style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "送出回報";
                 }
             });
 
