@@ -1,384 +1,59 @@
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>報修</title>
-        <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-        <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-        <script>
-        // 初始化 vConsole, for debug
-        var vConsole = new window.VConsole();
-      </script>
-     <style>
-        /* 全域樣式重設，營造專業素雅氛圍 */
-        body {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", "Noto Sans TC", sans-serif;
-          background-color: #f4f6f8; /* 霧面灰白底色 */
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-        }
-
-        /* 外層卡片容器 */
-        .container {
-          background-color: #ffffff;
-          padding: 2.5rem;
-          border-radius: 12px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-          width: 90%;          /* 行動裝置上預留左右邊距 */
-          max-width: 480px;    /* 電腦版限制最大寬度，避免過寬 */
-          text-align: center;
-        }
-
-        h2 {
-          color: #1f3a52;      /* 深英倫藍 */
-          margin-bottom: 1.5rem;
-          font-size: 1.5rem;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-        }
-
-        /* 表單佈局 */
-        .form-group {
-          display: flex;
-          flex-direction: column; /* 預設在手機上垂直排列 */
-          gap: 12px;
-        }
-
-        /* 輸入框樣式 */
-        .input-box {
-          padding: 14px 16px;
-          border: 1px solid #dcdcdc;
-          border-radius: 6px;
-          font-size: 1rem;
-          outline: none;
-          transition: border-color 0.3s ease;
-          color: #333333;
-        }
-
-        .input-box:focus {
-          border-color: #1f3a52; /* 聚焦時變深藍 */
-          box-shadow: 0 0 0 3px rgba(31, 58, 82, 0.1);
-        }
-
-        /* 按鈕樣式 */
-        .submit-btn {
-          padding: 14px 20px;
-          background-color: #1f3a52; /* 專業深藍 */
-          color: #ffffff;
-          border: none;
-          border-radius: 6px;
-          font-size: 1rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition: background-color 0.3s ease, transform 0.1s ease;
-        }
-
-        .submit-btn:hover {
-          background-color: #15293a; /* 滑過時加深 */
-        }
-
-        .submit-btn:active {
-          transform: scale(0.98); /* 點擊時的下壓反饋 */
-        }
-
-        /* ── RWD 響應式優化 (針對平板與電腦螢幕) ── */
-        @media (min-width: 576px) {
-          .form-group {
-            flex-direction: row; /* 在寬螢幕上橫向並排，更流暢 */
-          }
-          
-          .input-box {
-            flex: 1; /* 讓輸入框自動填滿剩餘空間 */
-          }
-
-          /* 讓描述欄位在寬螢幕時佔滿整行 */
-          .field-container.full-width {
-            width: 100%;
-          }
-
-          .submit-btn {
-            width: auto; /* 按鈕寬度由文字決定 */
-            min-width: 100px;
-          }
-        }
-        /* 將 select 的樣式與 input-box 完全統一 */
-        select.input-box {
-            appearance: none;          /* 移除瀏覽器預設的下拉箭頭樣式 */
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231F3A52%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px top 50%;
-            background-size: 10px auto;
-            cursor: pointer;
-            }
-
-            /* 確保 disabled 狀態的文字顏色也不會太淺 */
-            select.input-box:disabled {
-            background-color: #f9f9f9;
-            cursor: not-allowed;
-        }
-        /* 日期輸入框樣式優化 */
-        input[type="date"].input-box {
-            padding: 14px 16px;
-            /* 確保在 Safari/Chrome 上字體一致 */
-            font-family: inherit;
-            color: #333333;
-        }
-
-        /* 讓日期輸入框在未選擇時顯示灰色提示字色，選擇後顯示深色 */
-        input[type="date"].input-box:invalid {
-            color: #999;
-        }
-
-        /* Label 標籤樣式 */
-        .form-label {
-            display: block;
-            font-size: 0.85rem;
-            color: #1f3a52; /* 與標題同色系 */
-            margin-bottom: 5px;
-            font-weight: 500;
-            text-align: left;
-            margin-top: 10px; /* 與上方元素保持距離 */
-        }
-
-        /* 調整原本的 flexbox 結構，讓標籤能正確對應欄位 */
-        .field-container {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            width: 100%;
-        }
-
-        /* ── 專屬優雅風成功畫面樣式 ── */
-        .success-wrapper {
-          padding: 1.5rem 0;
-          animation: elegantFadeIn 0.6s ease forwards;
-        }
-        .success-icon-box {
-          width: 70px;
-          height: 70px;
-          margin: 0 auto 1.5rem auto;
-          border: 2px solid #d4af37; /* 古銅金細線條邊框 */
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .success-icon {
-          color: #d4af37; /* 古銅金勾勾 */
-          font-size: 2rem;
-          font-weight: 300;
-        }
-        .success-title {
-          color: #1f3a52;
-          font-size: 1.4rem;
-          font-weight: 600;
-          letter-spacing: 1px;
-          margin-bottom: 0.75rem;
-        }
-        .success-text {
-          color: #778899; /* 雅致輕灰 */
-          font-size: 0.95rem;
-          letter-spacing: 0.5px;
-        }
-        .countdown-num {
-          color: #1f3a52;
-          font-weight: 600;
-          font-size: 1.1rem;
-          margin: 0 2px;
-        }
-
-        /* 淡入動畫 */
-        @keyframes elegantFadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── RWD 平板與電腦螢幕適應 ── */
-        @media (min-width: 576px) {
-          .form-group { flex-direction: row; }
-          .input-box { flex: 1; }
-          .submit-btn { width: auto; min-width: 100px; }
-          .success-wrapper { padding: 2.5rem 0; } /* 寬螢幕加大留白營造精品感 */
-        }
-         
-         @keyframes spin {
-             0% { transform: rotate(0deg); }
-             100% { transform: rotate(360deg); }
-         }
-
-      </style>
-    </head>
-    <body>
-        <div class="container" id="mainContainer">
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>報修系統</title>
+    <!-- 引入 LINE SDK 與 vConsole -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <!-- 引入獨立的 CSS 樣式表 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="mainContainer">
         <h2>請輸入報修資訊</h2>
         <div class="form-group">
-        <input type="text" class="input-box" id="phone" placeholder="請輸入網路電話分機(必填)">
-        <input type="text" class="input-box" id="department" placeholder="請輸入單位(必填)">
-        <input type="text" class="input-box" id="contact" placeholder="請輸入聯絡人姓名/電話(必填)">
-      
-        <div class="field-container">
-            <label class="form-label">報修種類</label>
-            <select class="input-box" id="issueType">
-                <option value="更改共振群組">更改共振群組</option>
-                <option value="話機障礙">話機障礙</option>
-            </select>
-        </div>
-
-        <!-- 新增的障礙描述多行輸入框 -->
-        <div class="field-container full-width">
-            <label class="form-label" for="description">障礙描述(選項)</label>
-            <textarea class="input-box" id="description" name="description" rows="3" placeholder="請簡述您遇到的問題..."></textarea>
-        </div>
-
-        <button class="submit-btn" id="submitBtn" style="margin-top: 20px;">送出回報</button>
-        </div>
-        </div>
-        
-        <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-family: sans-serif;">
-            <div style="border: 4px solid #f3f3f3; border-top: 4px solid #06C755; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
-            <p style="margin-top: 15px; font-size: 16px; font-weight: bold;">正在傳送中，請稍候...</p>
-        </div>
-
-        <script>
-            // 取得今天的日期
-            const today = new Date();
-      
-            // 格式化為 YYYY-MM-DD
-            // getMonth() 回傳的是 0-11，所以要 +1
-            // padStart(2, '0') 確保 6 月會變成 06
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            const hour = today.getHours();
-            const minutes = today.getMinutes();
-      
-            const formattedToday = `${yyyy}-${mm}-${dd}-${hour}:${minutes}`;
-
-            const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyhd7rYJ3CWRmVxUx4yfLYq5GeIzafzjm4Lbg-EJQZ4YLxMDezMz0QNXEXDoHHYgwdaVg/exec";        
-            const LIFF_ID = '2011447440-TpOhGOzi'; // 從 LINE Developers Console 取得
-
-            liff.init({ liffId: LIFF_ID }).then(() => {
-                console.log("LIFF 已初始化");
-            });
-
-            document.getElementById('submitBtn').addEventListener('click', async () => {
-                const submitBtn = document.getElementById('submitBtn');
-                const loadingOverlay = document.getElementById('loadingOverlay');
-
-                // 1. 取得三個必填欄位的值並去除前後空白
-                const department = document.getElementById('department').value.trim();
-                const phone = document.getElementById('phone').value.trim();
-                const contact = document.getElementById('contact').value.trim();
-                
-                // 2. 檢查是否有未填寫的必填欄位
-                if (!department || !phone || !contact) {
-                    alert("請完整填寫必填欄位（單位、電話/分機、聯絡人）！");
-                    return; // 中斷執行，不往下發送
-                }
-
-                try {
-                    // 1. 確保使用者已登入
-                    if (!liff.isLoggedIn()) { liff.login(); }
-
-                    // 2. 立即顯示全螢幕轉場 Loading，並鎖定按鈕（防止重複點擊）
-                    loadingOverlay.style.display = 'flex';
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = "處理中...";
-
-                    // 2. 獲取使用者個人資料
-                    const profile = await liff.getProfile();
-
-                    // 3. 準備要打包送過去的資料
-                    const payload = {
-                        userId: profile.userId,
-                        userName: profile.displayName,
-                        phone: document.getElementById('phone').value,
-                        department: document.getElementById('department').value,
-                        contact: document.getElementById('contact').value,
-                        issueType: document.getElementById('issueType').value,
-                        description: document.getElementById('description').value,
-                        issueTime: formattedToday
-                    };
-
-                    const response = await fetch(GAS_WEB_APP_URL, {
-                        method: "POST",
-                        body: JSON.stringify(payload),
-                        headers: {
-                            "Content-Type": "text/plain;charset=utf-8" 
-                        },
-                        // 嘗試加入 mode: 'cors' 看看瀏覽器反應
-                        mode: 'cors' 
-                    });
-
-                    if (response.ok) {
-                        console.log("請求已成功送達後端！");
-                        showSuccessAndClose();
-                    } else {
-                        console.warn("伺服器回應狀態碼非 200，但後端可能已執行");
-                        showSuccessAndClose(); // 實務上若後端確定都有收到，可直接走成功流程
-                    }
-                } catch (err) {
-                    console.error("捕捉到錯誤:", err);
-                    // showSuccessAndClose();
-                    // 🔍 關鍵：精準判斷這是不是 LINE / 瀏覽器特有的 Load failed 假性報錯
-                    // 同時確認後端其實已經有順利運作（你的經驗是後端每次都會正常打出去）
-                    if (err.message === "Load failed") {
-                        console.warn("這是 LINE 內嵌瀏覽器的跨網域重新導向限制，但後端已確認執行，視為成功。");
-                        showSuccessAndClose();
-                        return; // 直接結束，不往下走錯誤提示
-                    }
-                }
-            });
-
-
-        function showSuccessAndClose() {
-            const submitBtn = document.getElementById('submitBtn');
-            loadingOverlay.style.display = 'none';
-            submitBtn.disabled = false;
-            submitBtn.innerText = "送出回報";
-            
-            console.log("begin showSuccessAndClose");
-            const container = document.getElementById('mainContainer');
-            
-            // 將卡片內部替換為古銅金細線風的成功語系
-            container.innerHTML = `
-            <div class="success-wrapper">
-              <div class="success-icon-box">
-                <span class="success-icon">✓</span>
-              </div>
-              <div class="success-title">報修成功, 您可利用查詢鈕確認案件狀態</div>
-              <div class="success-text">
-                安全連線已建立，視窗將於 
-                <span id="countdown" class="countdown-num">3</span> 
-                秒後自動關閉
-              </div>
+            <div class="field-container">
+                <label class="form-label" for="phone">網路電話分機 <span style="color: #ff4d4f;">*</span></label>
+                <input type="text" class="input-box" id="phone" placeholder="請輸入分機號碼">
             </div>
-          `;
+            
+            <div class="field-container">
+                <label class="form-label" for="department">申請單位 <span style="color: #ff4d4f;">*</span></label>
+                <input type="text" class="input-box" id="department" placeholder="請輸入單位名稱">
+            </div>
 
-          let seconds = 3;
-          const countdownEl = document.getElementById('countdown');
+            <div class="field-container">
+                <label class="form-label" for="contact">聯絡人 <span style="color: #ff4d4f;">*</span></label>
+                <input type="text" class="input-box" id="contact" placeholder="請輸入姓名/電話">
+            </div>
+      
+            <div class="field-container">
+                <label class="form-label" for="issueType">報修種類</label>
+                <select class="input-box" id="issueType">
+                    <option value="更改共振群組">更改共振群組</option>
+                    <option value="話機障礙">話機障礙</option>
+                </select>
+            </div>
 
-          const timer = setInterval(() => {
-            seconds--;
-            if (countdownEl) countdownEl.textContent = seconds;
+            <!-- 障礙描述多行輸入框 -->
+            <div class="field-container full-width">
+                <label class="form-label" for="description">障礙描述 (選填)</label>
+                <textarea class="input-box" id="description" name="description" rows="3" placeholder="請簡述您遇到的問題..."></textarea>
+            </div>
 
-            if (seconds <= 0) {
-              clearInterval(timer);
-              // 呼叫 LINE SDK 關閉網頁
-              if (typeof liff !== 'undefined' && liff.closeWindow) {
-                liff.closeWindow();
-              } else {
-                console.log("LIFF closeWindow 觸發 (非 LINE 環境)");
-              }
-            }
-          }, 1000);
-        }
-        </script>
-    </body>
-    </html>
+            <button class="submit-btn full-width" id="submitBtn">送出回報</button>
+        </div>
+    </div>
+    
+    <!-- 全螢幕 Loading 遮罩 -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-family: sans-serif;">
+        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #06C755; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; font-size: 16px; font-weight: bold;">正在傳送中，請稍候...</p>
+    </div>
+
+    <!-- 引入獨立的 JS 邏輯檔 -->
+    <script src="app.js"></script>
+</body>
+</html>
