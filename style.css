@@ -1,0 +1,164 @@
+/* 全域樣式重設，營造專業素雅氛圍 */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", "Noto Sans TC", sans-serif;
+  background-color: #f4f6f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* 外層卡片容器 */
+.container {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  width: 90%;
+  max-width: 480px;
+  text-align: center;
+}
+
+h2 {
+  color: #1f3a52;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* 表單佈局 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 輸入框樣式 */
+.input-box {
+  padding: 14px 16px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+  color: #333333;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-box:focus {
+  border-color: #1f3a52;
+  box-shadow: 0 0 0 3px rgba(31, 58, 82, 0.1);
+}
+
+/* 按鈕樣式 */
+.submit-btn {
+  padding: 14px 20px;
+  background-color: #1f3a52;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  margin-top: 20px;
+}
+
+.submit-btn:hover {
+  background-color: #15293a;
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* 下拉選單樣式 */
+select.input-box {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231F3A52%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px top 50%;
+  background-size: 10px auto;
+  cursor: pointer;
+}
+
+/* Label 標籤樣式 */
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #1f3a52;
+  margin-bottom: 5px;
+  font-weight: 500;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 100%;
+}
+
+.field-container.full-width {
+  width: 100%;
+}
+
+/* 成功畫面樣式 */
+.success-wrapper {
+  padding: 1.5rem 0;
+  animation: elegantFadeIn 0.6s ease forwards;
+}
+
+.success-icon-box {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1.5rem auto;
+  border: 2px solid #d4af37;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-icon {
+  color: #d4af37;
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.success-title {
+  color: #1f3a52;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
+.success-text {
+  color: #778899;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.countdown-num {
+  color: #1f3a52;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 2px;
+}
+
+@keyframes elegantFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
