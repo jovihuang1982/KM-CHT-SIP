@@ -1,7 +1,7 @@
 // 初始化 vConsole, for debug
 var vConsole = new window.VConsole();
 
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyhd7rYJ3CWRmVxUx4yfLYq5GeIzafzjm4Lbg-EJQZ4YLxMDezMz0QNXEXDoHHYgwdaVg/exec";        
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBBQ8hkzjC6E9QJdp7mrdM3YIWmKZjT4GepdRDtUJXRyrOphs73bO9w1jfReVkVBf0/exec";        
 const LIFF_ID = '2011447440-TpOhGOzi';
 
 // 初始化 LIFF
@@ -57,7 +57,8 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
             contact: contact,
             issueType: document.getElementById('issueType').value,
             description: document.getElementById('description').value,
-            issueTime: formattedToday
+            issueTime: formattedToday,
+            eventId: today.getTime()
         };
 
         // 8. 發送 Fetch 請求到 GAS
