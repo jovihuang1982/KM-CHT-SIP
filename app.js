@@ -58,7 +58,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
             issueType: document.getElementById('issueType').value,
             description: document.getElementById('description').value,
             issueTime: formattedToday,
-            eventId: today.getTime()
+            timestamp: today.getTime()
         };
 
         // 8. 發送 Fetch 請求到 GAS
