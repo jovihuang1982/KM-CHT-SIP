@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>報修系統管理後台 - Dashboard (RWD)</title>
+    <title>報修系統管理後台 - Dashboard</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 圖示 -->
@@ -20,40 +20,47 @@
             --text-dark: #333333;
         }
 
-	     /* 1. 確保全螢幕高度與寬度計算正確 */
-		html, body {
-		    width: 100%;
-		    height: 100%;
-		    margin: 0;
-		    padding: 0;
-		    background-color: var(--bg-gray);
-		    font-family: "SF Pro Text", "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
-		    color: var(--text-dark);
-		}
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-gray);
+            font-family: "SF Pro Text", "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+            color: var(--text-dark);
+        }
 
-		/* 2. 強制登入頁面滿版並彈性置中 (Flexbox) */
-		.login-wrapper {
-		    display: flex !important;
-		    justify-content: center !important; /* 水平置中 */
-		    align-items: center !important;     /* 垂直置中 */
-		    width: 100vw;
-		    min-height: 100vh;
-		    background-color: var(--primary-navy);
-		    padding: 1.5rem;
-		    box-sizing: border-box;
-		}
+        /* ── 視圖顯示/隱藏控制 ── */
+        .page-view {
+            display: none;
+        }
+        
+        /* 登入視圖啟動時才套用 Flex 置中 (移除 !important 避免擋住 JS 切換) */
+        #loginView.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            min-height: 100vh;
+            background-color: var(--primary-navy);
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
 
-		/* 3. 修正登入卡片寬度與邊界 */
-		.login-card {
-		    background: #ffffff;
-		    padding: 2.5rem 2rem;
-		    border-radius: 12px;
-		    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-		    width: 100%;
-		    max-width: 420px; /* 電腦版最大寬度 */
-		    margin: auto;    /* 雙重保險置中 */
-		    border-top: 5px solid var(--accent-gold);
-		}
+        #dashboardView.active {
+            display: block;
+        }
+
+        /* ── 登入卡片 ── */
+        .login-card {
+            background: #ffffff;
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 420px;
+            border-top: 5px solid var(--accent-gold);
+        }
 
         /* ── 導覽列 RWD ── */
         .navbar-custom {
@@ -75,7 +82,7 @@
             font-weight: 600;
         }
 
-        /* ── 卡片與數據區 RWD ── */
+        /* ── 卡片與數據區 ── */
         .stat-card {
             background: #ffffff;
             border-radius: 8px;
@@ -112,7 +119,7 @@
             width: 100%;
         }
 
-        /* ── 表格 RWD 優化 ── */
+        /* ── 表格 RWD ── */
         .table-responsive {
             border-radius: 8px;
             background: #fff;
@@ -157,15 +164,6 @@
             background-color: #dc3545;
         }
 
-        /* 視圖切換控制 */
-        .page-view {
-            display: none;
-        }
-        .page-view.active {
-            display: block;
-        }
-
-        /* ── 手機專用特定樣式修飾 (< 576px) ── */
         @media (max-width: 575.98px) {
             .container-fluid {
                 padding-left: 0.8rem !important;
@@ -183,7 +181,6 @@
             .text-truncate-custom {
                 max-width: 120px;
             }
-            /* 手機版 modal 滿版調整 */
             .modal-dialog {
                 margin: 0.5rem;
             }
@@ -193,16 +190,16 @@
 <body>
 
     <!-- 1. 登入視圖 (Login View) -->
-    <div id="loginView" class="login-wrapper page-view active">
+    <div id="loginView" class="page-view active">
         <div class="login-card text-center">
             <h3 class="mb-4" style="color: var(--primary-navy); font-weight: 600;">報修管理系統</h3>
             <form id="loginForm">
                 <div class="form-floating mb-3 text-start">
-                    <input type="text" class="form-control" id="username" placeholder="帳號" required>
+                    <input type="text" class="form-control" id="username" placeholder="帳號" value="admin" required>
                     <label for="username">管理員帳號</label>
                 </div>
                 <div class="form-floating mb-4 text-start">
-                    <input type="password" class="form-control" id="password" placeholder="密碼" required>
+                    <input type="password" class="form-control" id="password" placeholder="密碼" value="1234" required>
                     <label for="password">密碼</label>
                 </div>
                 <button type="submit" class="btn btn-navy w-100 py-2">登入系統</button>
@@ -212,7 +209,7 @@
 
     <!-- 2. 主後台內容 (Main Dashboard View) -->
     <div id="dashboardView" class="page-view">
-        <!-- 頂部導覽列 (RWD Collapsible Navbar) -->
+        <!-- 頂部導覽列 -->
         <nav class="navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
             <div class="container-fluid px-3 px-md-4">
                 <a class="navbar-brand" href="#"><i class="fa-solid fa-screwdriver-wrench me-2"></i>維運管理 Dashboard</a>
@@ -242,9 +239,8 @@
 
         <div class="container-fluid p-3 p-md-4">
 
-            <!-- A. 數據分析分頁 (Analytics Tab) -->
+            <!-- A. 數據分析分頁 -->
             <div id="analyticsContent">
-                <!-- 統計 KPI 卡片區 (RWD Grid: 手機1欄, 平板2欄, 電腦4欄) -->
                 <div class="row g-3 mb-4">
                     <div class="col-12 col-sm-6 col-xl-3">
                         <div class="stat-card gold-border">
@@ -272,7 +268,6 @@
                     </div>
                 </div>
 
-                <!-- 圖表展示區 (RWD Grid: 手機/平板1欄, 電腦2欄) -->
                 <div class="row g-3">
                     <div class="col-12 col-lg-6">
                         <div class="card p-3 shadow-sm border-0 h-100">
@@ -293,10 +288,9 @@
                 </div>
             </div>
 
-            <!-- B. 案件管理分頁 (Case Management Tab) -->
+            <!-- B. 案件管理分頁 -->
             <div id="casesContent" style="display: none;">
                 <div class="card p-3 shadow-sm border-0">
-                    <!-- 搜尋與過濾列 (RWD Form Controls) -->
                     <div class="row g-2 mb-3">
                         <div class="col-12 col-md-4 col-lg-3">
                             <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="搜尋 IssueId, 聯絡人, 單位..." onkeyup="filterCases()">
@@ -319,7 +313,6 @@
                         </div>
                     </div>
 
-                    <!-- 資料表格 (支援水平滑動 RWD) -->
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
@@ -336,7 +329,6 @@
                                 </tr>
                             </thead>
                             <tbody id="caseTableBody">
-                                <!-- 動態渲染 Dummy Data -->
                             </tbody>
                         </table>
                     </div>
@@ -346,7 +338,7 @@
         </div>
     </div>
 
-    <!-- 編輯案件 Modal 彈窗 (適配手機滿版與捲動) -->
+    <!-- 編輯案件 Modal 彈窗 -->
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -370,7 +362,6 @@
 
                         <hr class="my-2">
 
-                        <!-- 管理者補充資訊 (Admin 表欄位) -->
                         <div class="mb-3">
                             <label for="modalCaseClosed" class="form-label fw-bold small">結案狀態 (CaseClosed)</label>
                             <select class="form-select form-select-sm" id="modalCaseClosed">
@@ -407,7 +398,6 @@
     <!-- Bootstrap & JS 腳本 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ── 1. 模擬資料 ──
         let casesData = [
             {
                 IssueId: "REQ-20260928-01",
@@ -457,27 +447,28 @@
         let chart1Instance = null;
         let chart2Instance = null;
 
-        // ── 2. 初始化 ──
         document.addEventListener('DOMContentLoaded', () => {
             editModalObj = new bootstrap.Modal(document.getElementById('editModal'));
             
+            // 監聽登入送出事件
             document.getElementById('loginForm').addEventListener('submit', (e) => {
                 e.preventDefault();
+                // 切換 View
                 document.getElementById('loginView').classList.remove('active');
                 document.getElementById('dashboardView').classList.add('active');
+                
+                // 載入表格與圖表
                 renderTable(casesData);
                 initCharts();
             });
         });
 
-        // ── 3. 切換分頁 ──
         function switchTab(tab) {
             document.getElementById('tabAnalytics').classList.remove('active');
             document.getElementById('tabCases').classList.remove('active');
             document.getElementById('analyticsContent').style.display = 'none';
             document.getElementById('casesContent').style.display = 'none';
 
-            // 手機版點擊後自動收合 Navbar 選單
             const navbarCollapse = document.getElementById('navbarNav');
             if (navbarCollapse.classList.contains('show')) {
                 new bootstrap.Collapse(navbarCollapse).hide();
@@ -497,7 +488,6 @@
             document.getElementById('loginView').classList.add('active');
         }
 
-        // ── 4. 表格與 CRUD ──
         function renderTable(data) {
             const tbody = document.getElementById('caseTableBody');
             tbody.innerHTML = '';
@@ -583,7 +573,6 @@
             document.getElementById('kpiOpenCases').innerText = openCount;
         }
 
-        // ── 5. 圖表初始化與響應式重繪 ──
         function initCharts() {
             if (chart1Instance) chart1Instance.destroy();
             if (chart2Instance) chart2Instance.destroy();
