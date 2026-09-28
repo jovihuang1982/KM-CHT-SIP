@@ -20,32 +20,40 @@
             --text-dark: #333333;
         }
 
-        body {
-            font-family: "SF Pro Text", "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
-            background-color: var(--bg-gray);
-            color: var(--text-dark);
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* ── 登入區塊 RWD ── */
-        .login-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: var(--primary-navy);
-            padding: 1.5rem;
-        }
-        .login-card {
-            background: #ffffff;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px;
-            border-top: 5px solid var(--accent-gold);
-        }
+		/* 1. 確保全螢幕高度與寬度計算正確 */
+			html, body {
+	    	width: 100%;
+	    	height: 100%;
+	    	margin: 0;
+	    	padding: 0;
+	    	background-color: var(--bg-gray);
+	    	font-family: "SF Pro Text", "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+	    	color: var(--text-dark);
+		}
+	
+		/* 2. 強制登入頁面滿版並彈性置中 (Flexbox) */
+		.login-wrapper {
+		    display: flex !important;
+		    justify-content: center !important; /* 水平置中 */
+		    align-items: center !important;     /* 垂直置中 */
+		    width: 100vw;
+		    min-height: 100vh;
+		    background-color: var(--primary-navy);
+		    padding: 1.5rem;
+		    box-sizing: border-box;
+		}
+	
+		/* 3. 修正登入卡片寬度與邊界 */
+		.login-card {
+		    background: #ffffff;
+		    padding: 2.5rem 2rem;
+		    border-radius: 12px;
+		    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+		    width: 100%;
+		    max-width: 420px; /* 電腦版最大寬度 */
+		    margin: auto;    /* 雙重保險置中 */
+		    border-top: 5px solid var(--accent-gold);
+		}
 
         /* ── 導覽列 RWD ── */
         .navbar-custom {
