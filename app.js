@@ -108,7 +108,7 @@ function showSuccessAndClose() {
           <div class="success-icon-box">
             <span class="success-icon">✓</span>
           </div>
-          <div class="success-title">報修成功，您可利用查詢鈕確認案件狀態</div>
+          <div class="success-title">報修成功</div>
           <div class="success-text">
             安全連線已建立，視窗將於 
             <span id="countdown" class="countdown-num">3</span> 
