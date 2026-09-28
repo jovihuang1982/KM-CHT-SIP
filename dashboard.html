@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>報修系統管理後台 - Dashboard</title>
+    <title>報修系統管理後台 - Dashboard (RWD)</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 圖示 -->
@@ -25,19 +25,21 @@
             background-color: var(--bg-gray);
             color: var(--text-dark);
             margin: 0;
+            overflow-x: hidden;
         }
 
-        /* ── 登入區塊 ── */
+        /* ── 登入區塊 RWD ── */
         .login-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             background-color: var(--primary-navy);
+            padding: 1.5rem;
         }
         .login-card {
             background: #ffffff;
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             width: 100%;
@@ -45,7 +47,7 @@
             border-top: 5px solid var(--accent-gold);
         }
 
-        /* ── 導覽列 ── */
+        /* ── 導覽列 RWD ── */
         .navbar-custom {
             background-color: var(--primary-navy);
             border-bottom: 2px solid var(--accent-gold);
@@ -54,26 +56,30 @@
             color: #ffffff !important;
             font-weight: 600;
             letter-spacing: 0.5px;
+            font-size: 1.1rem;
         }
         .nav-link {
             color: rgba(255,255,255,0.8) !important;
+            padding: 0.5rem 0.8rem !important;
         }
         .nav-link.active {
             color: var(--accent-gold) !important;
             font-weight: 600;
         }
 
-        /* ── 卡片與數據區 ── */
+        /* ── 卡片與數據區 RWD ── */
         .stat-card {
             background: #ffffff;
             border-radius: 8px;
             padding: 1.25rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.03);
             border-left: 4px solid var(--primary-navy);
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
         }
         .stat-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
         .stat-card.gold-border {
             border-left-color: var(--accent-gold);
@@ -84,10 +90,37 @@
             font-weight: 500;
         }
         .stat-value {
-            font-size: 1.75rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--primary-navy);
             margin-top: 5px;
+            word-break: break-all;
+        }
+
+        /* ── 圖表容器 RWD ── */
+        .chart-container {
+            position: relative;
+            height: 260px;
+            width: 100%;
+        }
+
+        /* ── 表格 RWD 優化 ── */
+        .table-responsive {
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .table {
+            margin-bottom: 0;
+            vertical-align: middle;
+        }
+
+        .text-truncate-custom {
+            max-width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* ── 按鈕與標籤 ── */
@@ -116,12 +149,36 @@
             background-color: #dc3545;
         }
 
-        /* 隱藏未顯示頁面 */
+        /* 視圖切換控制 */
         .page-view {
             display: none;
         }
         .page-view.active {
             display: block;
+        }
+
+        /* ── 手機專用特定樣式修飾 (< 576px) ── */
+        @media (max-width: 575.98px) {
+            .container-fluid {
+                padding-left: 0.8rem !important;
+                padding-right: 0.8rem !important;
+            }
+            .login-card {
+                padding: 1.5rem;
+            }
+            .stat-value {
+                font-size: 1.4rem;
+            }
+            .chart-container {
+                height: 220px;
+            }
+            .text-truncate-custom {
+                max-width: 120px;
+            }
+            /* 手機版 modal 滿版調整 */
+            .modal-dialog {
+                margin: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -147,74 +204,82 @@
 
     <!-- 2. 主後台內容 (Main Dashboard View) -->
     <div id="dashboardView" class="page-view">
-        <!-- 頂部導覽列 -->
-        <nav class="navbar navbar-expand-lg navbar-custom">
-            <div class="container-fluid px-4">
+        <!-- 頂部導覽列 (RWD Collapsible Navbar) -->
+        <nav class="navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
+            <div class="container-fluid px-3 px-md-4">
                 <a class="navbar-brand" href="#"><i class="fa-solid fa-screwdriver-wrench me-2"></i>維運管理 Dashboard</a>
-                <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" id="tabAnalytics" href="#" onclick="switchTab('analytics')"><i class="fa-solid fa-chart-pie me-1"></i>數據分析</a>
+                            <a class="nav-link active" id="tabAnalytics" href="#" onclick="switchTab('analytics')">
+                                <i class="fa-solid fa-chart-pie me-1"></i>數據分析
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="tabCases" href="#" onclick="switchTab('cases')"><i class="fa-solid fa-list-check me-1"></i>案件管理</a>
+                            <a class="nav-link" id="tabCases" href="#" onclick="switchTab('cases')">
+                                <i class="fa-solid fa-list-check me-1"></i>案件管理
+                            </a>
                         </li>
                     </ul>
-                    <div class="d-flex align-items-center text-white">
-                        <span class="me-3"><i class="fa-solid fa-user-gear me-1"></i> 管理員</span>
-                        <button class="btn btn-sm btn-outline-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> 登出</button>
+                    <div class="d-flex align-items-center justify-content-between justify-content-lg-end text-white pt-2 pt-lg-0 border-top border-secondary border-lg-0">
+                        <span class="me-3 small"><i class="fa-solid fa-user-gear me-1"></i> 管理員</span>
+                        <button class="btn btn-sm btn-outline-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-1"></i>登出</button>
                     </div>
                 </div>
             </div>
         </nav>
 
-        <div class="container-fluid p-4">
+        <div class="container-fluid p-3 p-md-4">
 
             <!-- A. 數據分析分頁 (Analytics Tab) -->
             <div id="analyticsContent">
-                <!-- 統計 KPI 卡片區 -->
+                <!-- 統計 KPI 卡片區 (RWD Grid: 手機1欄, 平板2欄, 電腦4欄) -->
                 <div class="row g-3 mb-4">
-                    <div class="col-md-3">
+                    <div class="col-12 col-sm-6 col-xl-3">
                         <div class="stat-card gold-border">
                             <div class="stat-title">待處理案件 (Backlog)</div>
                             <div class="stat-value text-danger" id="kpiOpenCases">3</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-sm-6 col-xl-3">
                         <div class="stat-card">
                             <div class="stat-title">本月報修總數</div>
                             <div class="stat-value" id="kpiTotalCases">28</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-sm-6 col-xl-3">
                         <div class="stat-card">
                             <div class="stat-title">平均結案率</div>
                             <div class="stat-value text-success">89.2%</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12 col-sm-6 col-xl-3">
                         <div class="stat-card gold-border">
                             <div class="stat-title">主要障礙分類</div>
-                            <div class="stat-value" style="font-size: 1.4rem;">線路問題</div>
+                            <div class="stat-value" style="font-size: 1.3rem;">線路問題</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 圖表展示區 -->
+                <!-- 圖表展示區 (RWD Grid: 手機/平板1欄, 電腦2欄) -->
                 <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="card p-3 shadow-sm border-0">
+                    <div class="col-12 col-lg-6">
+                        <div class="card p-3 shadow-sm border-0 h-100">
                             <h6 class="card-title text-muted mb-3"><i class="fa-solid fa-chart-pie me-1"></i> 障礙真因分類統計 (IssueCategory)</h6>
-                            <canvas id="categoryChart" height="200"></canvas>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card p-3 shadow-sm border-0">
+                    <div class="col-12 col-lg-6">
+                        <div class="card p-3 shadow-sm border-0 h-100">
                             <h6 class="card-title text-muted mb-3"><i class="fa-solid fa-chart-line me-1"></i> 報修種類量分析 (IssueType)</h6>
-                            <canvas id="typeChart" height="200"></canvas>
+                            <div class="chart-container">
+                                <canvas id="typeChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -223,20 +288,20 @@
             <!-- B. 案件管理分頁 (Case Management Tab) -->
             <div id="casesContent" style="display: none;">
                 <div class="card p-3 shadow-sm border-0">
-                    <!-- 搜尋與過濾列 -->
+                    <!-- 搜尋與過濾列 (RWD Form Controls) -->
                     <div class="row g-2 mb-3">
-                        <div class="col-md-3">
-                            <input type="text" id="searchInput" class="form-control" placeholder="搜尋 IssueId, 聯絡人, 單位..." onkeyup="filterCases()">
+                        <div class="col-12 col-md-4 col-lg-3">
+                            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="搜尋 IssueId, 聯絡人, 單位..." onkeyup="filterCases()">
                         </div>
-                        <div class="col-md-2">
-                            <select id="statusFilter" class="form-select" onchange="filterCases()">
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <select id="statusFilter" class="form-select form-select-sm" onchange="filterCases()">
                                 <option value="">所有狀態</option>
                                 <option value="Open">未結案 (Open)</option>
                                 <option value="Closed">已結案 (Closed)</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <select id="categoryFilter" class="form-select" onchange="filterCases()">
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <select id="categoryFilter" class="form-select form-select-sm" onchange="filterCases()">
                                 <option value="">所有真因分類</option>
                                 <option value="線路問題">線路問題</option>
                                 <option value="硬體問題">硬體問題</option>
@@ -246,20 +311,20 @@
                         </div>
                     </div>
 
-                    <!-- 資料表格 (JOIN Client + Admin) -->
+                    <!-- 資料表格 (支援水平滑動 RWD) -->
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
-                                <tr>
+                                <tr class="text-nowrap">
                                     <th>IssueId</th>
-                                    <th>報修時間</th>
+                                    <th>時間</th>
                                     <th>單位 / 聯絡人</th>
-                                    <th>報修種類</th>
-                                    <th>描述 (Client)</th>
+                                    <th>種類</th>
+                                    <th>報修描述</th>
                                     <th>狀態</th>
-                                    <th>真因分類 (Admin)</th>
-                                    <th>處置措施 (ActionTaken)</th>
-                                    <th>操作</th>
+                                    <th>真因分類</th>
+                                    <th>處置措施</th>
+                                    <th class="text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="caseTableBody">
@@ -273,12 +338,12 @@
         </div>
     </div>
 
-    <!-- 編輯案件 Modal 彈窗 (對應 admin 表修訂) -->
+    <!-- 編輯案件 Modal 彈窗 (適配手機滿版與捲動) -->
     <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: var(--primary-navy); color: white;">
-                    <h5 class="modal-title"><i class="fa-solid fa-pen-to-square me-2"></i>更新案件結案資訊</h5>
+                    <h5 class="modal-title fs-6"><i class="fa-solid fa-pen-to-square me-2"></i>更新案件結案資訊</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -287,28 +352,28 @@
                         
                         <div class="mb-3">
                             <label class="form-label text-muted small">報修單號</label>
-                            <input type="text" class="form-control bg-light" id="displayIssueId" readonly>
+                            <input type="text" class="form-control form-control-sm bg-light" id="displayIssueId" readonly>
                         </div>
                         
                         <div class="mb-3">
                             <label class="form-label text-muted small">報修描述 (Client 填寫)</label>
-                            <textarea class="form-control bg-light" id="displayDescription" rows="2" readonly></textarea>
+                            <textarea class="form-control form-control-sm bg-light" id="displayDescription" rows="2" readonly></textarea>
                         </div>
 
-                        <hr>
+                        <hr class="my-2">
 
                         <!-- 管理者補充資訊 (Admin 表欄位) -->
                         <div class="mb-3">
-                            <label for="modalCaseClosed" class="form-label font-weight-bold">結案狀態 (CaseClosed)</label>
-                            <select class="form-select" id="modalCaseClosed">
+                            <label for="modalCaseClosed" class="form-label fw-bold small">結案狀態 (CaseClosed)</label>
+                            <select class="form-select form-select-sm" id="modalCaseClosed">
                                 <option value="false">未結案 (Open)</option>
                                 <option value="true">已結案 (Closed)</option>
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="modalIssueCategory" class="form-label">障礙真因分類 (IssueCategory)</label>
-                            <select class="form-select" id="modalIssueCategory">
+                            <label for="modalIssueCategory" class="form-label fw-bold small">障礙真因分類 (IssueCategory)</label>
+                            <select class="form-select form-select-sm" id="modalIssueCategory">
                                 <option value="未分類">未分類</option>
                                 <option value="線路問題">線路問題</option>
                                 <option value="硬體問題">硬體問題</option>
@@ -318,14 +383,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="modalActionTaken" class="form-label">處置措施簡述 (ActionTaken)</label>
-                            <textarea class="form-control" id="modalActionTaken" rows="3" placeholder="請詳述處理方式，此內容將作為未來 AI 自檢檢索庫..."></textarea>
+                            <label for="modalActionTaken" class="form-label fw-bold small">處置措施簡述 (ActionTaken)</label>
+                            <textarea class="form-control form-control-sm" id="modalActionTaken" rows="3" placeholder="請詳述處置方式..."></textarea>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-gold" onclick="saveCaseAdminData()">儲存更新</button>
+                <div class="modal-footer p-2">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-gold" onclick="saveCaseAdminData()">儲存更新</button>
                 </div>
             </div>
         </div>
@@ -334,7 +399,7 @@
     <!-- Bootstrap & JS 腳本 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ── 1. 模擬資料 (Client 表 JOIN Admin 表) ──
+        // ── 1. 模擬資料 ──
         let casesData = [
             {
                 IssueId: "REQ-20260928-01",
@@ -346,7 +411,6 @@
                 IssueType: "話機障礙",
                 Description: "話機拿起無聲，無法撥接外部電話。",
                 IssueTime: "2026-09-28 09:30",
-                // Admin 表欄位
                 CaseClosed: false,
                 ActionTaken: "",
                 IssueCategory: "未分類"
@@ -361,7 +425,6 @@
                 IssueType: "更改共振群組",
                 Description: "需新增新進人員分機 1108 到客服共振組。",
                 IssueTime: "2026-09-27 14:15",
-                // Admin 表欄位
                 CaseClosed: true,
                 ActionTaken: "已於交換機後台加入共振設定並測試通話正常。",
                 IssueCategory: "軟體問題"
@@ -376,7 +439,6 @@
                 IssueType: "話機障礙",
                 Description: "通話雜音極大，斷斷續續。",
                 IssueTime: "2026-09-26 11:00",
-                // Admin 表欄位
                 CaseClosed: true,
                 ActionTaken: "檢查為 RJ11 水晶頭接觸不良，重新壓接新水晶頭後恢復正常。",
                 IssueCategory: "線路問題"
@@ -384,15 +446,15 @@
         ];
 
         let editModalObj;
+        let chart1Instance = null;
+        let chart2Instance = null;
 
-        // ── 2. 初始化頁面 ──
+        // ── 2. 初始化 ──
         document.addEventListener('DOMContentLoaded', () => {
             editModalObj = new bootstrap.Modal(document.getElementById('editModal'));
             
-            // 登入事件監聽
             document.getElementById('loginForm').addEventListener('submit', (e) => {
                 e.preventDefault();
-                // 簡化驗證 (實務上需打 API 驗證 Token)
                 document.getElementById('loginView').classList.remove('active');
                 document.getElementById('dashboardView').classList.add('active');
                 renderTable(casesData);
@@ -400,12 +462,18 @@
             });
         });
 
-        // ── 3. 頁面切換 ──
+        // ── 3. 切換分頁 ──
         function switchTab(tab) {
             document.getElementById('tabAnalytics').classList.remove('active');
             document.getElementById('tabCases').classList.remove('active');
             document.getElementById('analyticsContent').style.display = 'none';
             document.getElementById('casesContent').style.display = 'none';
+
+            // 手機版點擊後自動收合 Navbar 選單
+            const navbarCollapse = document.getElementById('navbarNav');
+            if (navbarCollapse.classList.contains('show')) {
+                new bootstrap.Collapse(navbarCollapse).hide();
+            }
 
             if (tab === 'analytics') {
                 document.getElementById('tabAnalytics').classList.add('active');
@@ -421,7 +489,7 @@
             document.getElementById('loginView').classList.add('active');
         }
 
-        // ── 4. 表格渲染與 CRUD ──
+        // ── 4. 表格與 CRUD ──
         function renderTable(data) {
             const tbody = document.getElementById('caseTableBody');
             tbody.innerHTML = '';
@@ -429,21 +497,21 @@
             data.forEach(item => {
                 const statusBadge = item.CaseClosed 
                     ? `<span class="badge badge-closed">已結案</span>`
-                    : `<span class="badge badge-open">未處理</span>`;
+                    : `<span class="badge badge-open">未處置</span>`;
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="fw-bold">${item.IssueId}</td>
-                    <td class="small text-muted">${item.IssueTime}</td>
-                    <td>${item.Department}<br><span class="small text-muted">${item.Contact} (${item.Phone})</span></td>
-                    <td><span class="badge bg-secondary">${item.IssueType}</span></td>
-                    <td class="small" style="max-width: 200px;">${item.Description}</td>
-                    <td>${statusBadge}</td>
-                    <td><span class="badge bg-outline-dark border">${item.IssueCategory}</span></td>
-                    <td class="small text-muted" style="max-width: 200px;">${item.ActionTaken || '-'}</td>
-                    <td>
+                    <td class="fw-bold small text-nowrap">${item.IssueId}</td>
+                    <td class="small text-muted text-nowrap">${item.IssueTime}</td>
+                    <td class="text-nowrap">${item.Department}<br><span class="small text-muted">${item.Contact}</span></td>
+                    <td class="text-nowrap"><span class="badge bg-secondary">${item.IssueType}</span></td>
+                    <td class="small"><div class="text-truncate-custom" title="${item.Description}">${item.Description}</div></td>
+                    <td class="text-nowrap">${statusBadge}</td>
+                    <td class="text-nowrap"><span class="badge bg-outline-dark border text-dark">${item.IssueCategory}</span></td>
+                    <td class="small"><div class="text-truncate-custom" title="${item.ActionTaken || '-'}">${item.ActionTaken || '-'}</div></td>
+                    <td class="text-center text-nowrap">
                         <button class="btn btn-sm btn-outline-primary" onclick="openEditModal('${item.IssueId}')">
-                            <i class="fa-solid fa-pen"></i> 編輯
+                            <i class="fa-solid fa-pen"></i>
                         </button>
                     </td>
                 `;
@@ -451,7 +519,6 @@
             });
         }
 
-        // 開啟編輯視窗
         function openEditModal(issueId) {
             const item = casesData.find(c => c.IssueId === issueId);
             if (!item) return;
@@ -466,7 +533,6 @@
             editModalObj.show();
         }
 
-        // 儲存 Modal 更新資訊 (Update Admin Table)
         function saveCaseAdminData() {
             const issueId = document.getElementById('modalIssueId').value;
             const item = casesData.find(c => c.IssueId === issueId);
@@ -476,15 +542,12 @@
                 item.IssueCategory = document.getElementById('modalIssueCategory').value;
                 item.ActionTaken = document.getElementById('modalActionTaken').value.trim();
 
-                // 重新渲染與更新 KPI
                 renderTable(casesData);
                 updateKPI();
                 editModalObj.hide();
-                alert(`單號 ${issueId} 已成功更新！`);
             }
         }
 
-        // 篩選過濾
         function filterCases() {
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
             const statusVal = document.getElementById('statusFilter').value;
@@ -512,11 +575,13 @@
             document.getElementById('kpiOpenCases').innerText = openCount;
         }
 
-        // ── 5. 圖表初始化 (Chart.js) ──
+        // ── 5. 圖表初始化與響應式重繪 ──
         function initCharts() {
-            // 真因分類圓餅圖
+            if (chart1Instance) chart1Instance.destroy();
+            if (chart2Instance) chart2Instance.destroy();
+
             const ctx1 = document.getElementById('categoryChart').getContext('2d');
-            new Chart(ctx1, {
+            chart1Instance = new Chart(ctx1, {
                 type: 'doughnut',
                 data: {
                     labels: ['線路問題', '軟體問題', '硬體問題', '未分類'],
@@ -525,22 +590,31 @@
                         backgroundColor: ['#1F3A52', '#D4AF37', '#778899', '#E0E0E0']
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: window.innerWidth < 576 ? 'bottom' : 'right' }
+                    }
+                }
             });
 
-            // 報修種類柱狀圖
             const ctx2 = document.getElementById('typeChart').getContext('2d');
-            new Chart(ctx2, {
+            chart2Instance = new Chart(ctx2, {
                 type: 'bar',
                 data: {
-                    labels: ['話機障礙', '更改共振群組', '其他業務'],
+                    labels: ['話機障礙', '更改共振組', '其他業務'],
                     datasets: [{
                         label: '報修件數',
                         data: [18, 7, 3],
                         backgroundColor: '#1F3A52'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
             });
         }
     </script>
