@@ -1,228 +1,264 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>報修系統管理後台 - Dashboard</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome 圖示 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Chart.js 圖表庫 -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style-das.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>報修系統管理後台 - Dashboard</title>
+<!-- Bootstrap 5 CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- FontAwesome 圖示 -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	rel="stylesheet">
+<!-- Chart.js 圖表庫 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style-das.css">
 </head>
 <body>
 
-    <!-- 1. 登入視圖 (Login View) -->
-    <div id="loginView" class="page-view active">
-        <div class="login-card text-center">
-            <h3 class="mb-4" style="color: var(--primary-navy); font-weight: 600;">報修管理系統</h3>
-            <form id="loginForm">
-                <div class="form-floating mb-3 text-start">
-                    <input type="text" class="form-control" id="username" placeholder="帳號" value="admin" required>
-                    <label for="username">管理員帳號</label>
-                </div>
-                <div class="form-floating mb-4 text-start">
-                    <input type="password" class="form-control" id="password" placeholder="密碼" value="1234" required>
-                    <label for="password">密碼</label>
-                </div>
-                <button type="submit" class="btn btn-navy w-100 py-2">登入系統</button>
-            </form>
-        </div>
-    </div>
+	<!-- 1. 登入視圖 (Login View) -->
+	<div id="loginView" class="page-view active">
+		<div class="login-card text-center">
+			<h3 class="mb-4"
+				style="color: var(- -primary-navy); font-weight: 600;">報修管理系統</h3>
+			<form id="loginForm">
+				<div class="form-floating mb-3 text-start">
+					<input type="text" class="form-control" id="username"
+						placeholder="帳號" value="admin" required> <label
+						for="username">管理員帳號</label>
+				</div>
+				<div class="form-floating mb-4 text-start">
+					<input type="password" class="form-control" id="password"
+						placeholder="密碼" value="1234" required> <label
+						for="password">密碼</label>
+				</div>
+				<button type="submit" class="btn btn-navy w-100 py-2">登入系統</button>
+			</form>
+		</div>
+	</div>
 
-    <!-- 2. 主後台內容 (Main Dashboard View) -->
-    <div id="dashboardView" class="page-view">
-        <!-- 頂部導覽列 -->
-        <nav class="navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
-            <div class="container-fluid px-3 px-md-4">
-                <a class="navbar-brand" href="#"><i class="fa-solid fa-screwdriver-wrench me-2"></i>維運管理 Dashboard</a>
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="tabAnalytics" href="#" onclick="switchTab('analytics')">
-                                <i class="fa-solid fa-chart-pie me-1"></i>數據分析
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tabCases" href="#" onclick="switchTab('cases')">
-                                <i class="fa-solid fa-list-check me-1"></i>案件管理
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="d-flex align-items-center justify-content-between justify-content-lg-end text-white pt-2 pt-lg-0 border-top border-secondary border-lg-0">
-                        <span class="me-3 small"><i class="fa-solid fa-user-gear me-1"></i> 管理員</span>
-                        <button class="btn btn-sm btn-outline-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-1"></i>登出</button>
-                    </div>
-                </div>
-            </div>
-        </nav>
+	<!-- 2. 主後台內容 (Main Dashboard View) -->
+	<div id="dashboardView" class="page-view">
+		<!-- 頂部導覽列 -->
+		<nav
+			class="navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
+			<div class="container-fluid px-3 px-md-4">
+				<a class="navbar-brand" href="#"><i
+					class="fa-solid fa-screwdriver-wrench me-2"></i>維運管理 Dashboard</a>
+				<button class="navbar-toggler border-0" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNav">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link active"
+							id="tabAnalytics" href="#" onclick="switchTab('analytics')">
+								<i class="fa-solid fa-chart-pie me-1"></i>數據分析
+						</a></li>
+						<li class="nav-item"><a class="nav-link" id="tabCases"
+							href="#" onclick="switchTab('cases')"> <i
+								class="fa-solid fa-list-check me-1"></i>案件管理
+						</a></li>
+					</ul>
+					<div
+						class="d-flex align-items-center justify-content-between justify-content-lg-end text-white pt-2 pt-lg-0 border-top border-secondary border-lg-0">
+						<span class="me-3 small"><i
+							class="fa-solid fa-user-gear me-1"></i> 管理員</span>
+						<button class="btn btn-sm btn-outline-light" onclick="logout()">
+							<i class="fa-solid fa-right-from-bracket me-1"></i>登出
+						</button>
+					</div>
+				</div>
+			</div>
+		</nav>
 
-        <div class="container-fluid p-3 p-md-4">
+		<div class="container-fluid p-3 p-md-4">
 
-            <!-- A. 數據分析分頁 -->
-            <div id="analyticsContent">
-                <div class="row g-3 mb-4">
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="stat-card gold-border">
-                            <div class="stat-title">待處理案件 (Backlog)</div>
-                            <div class="stat-value text-danger" id="kpiOpenCases">3</div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="stat-card">
-                            <div class="stat-title">本月報修總數</div>
-                            <div class="stat-value" id="kpiTotalCases">28</div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="stat-card">
-                            <div class="stat-title">平均結案率</div>
-                            <div class="stat-value text-success">89.2%</div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="stat-card gold-border">
-                            <div class="stat-title">主要障礙分類</div>
-                            <div class="stat-value" style="font-size: 1.3rem;">線路問題</div>
-                        </div>
-                    </div>
-                </div>
+			<!-- A. 數據分析分頁 -->
+			<div id="analyticsContent">
+				<div class="row g-3 mb-4">
+					<div class="col-12 col-sm-6 col-xl-3">
+						<div class="stat-card gold-border">
+							<div class="stat-title">待處理案件 (Backlog)</div>
+							<div class="stat-value text-danger" id="kpiOpenCases">3</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-xl-3">
+						<div class="stat-card">
+							<div class="stat-title">本月報修總數</div>
+							<div class="stat-value" id="kpiTotalCases">28</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-xl-3">
+						<div class="stat-card">
+							<div class="stat-title">平均結案率</div>
+							<div class="stat-value text-success">89.2%</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-xl-3">
+						<div class="stat-card gold-border">
+							<div class="stat-title">主要障礙分類</div>
+							<div class="stat-value" style="font-size: 1.3rem;">線路問題</div>
+						</div>
+					</div>
+				</div>
 
-                <div class="row g-3">
-                    <div class="col-12 col-lg-6">
-                        <div class="card p-3 shadow-sm border-0 h-100">
-                            <h6 class="card-title text-muted mb-3"><i class="fa-solid fa-chart-pie me-1"></i> 障礙真因分類統計 (IssueCategory)</h6>
-                            <div class="chart-container">
-                                <canvas id="categoryChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-6">
-                        <div class="card p-3 shadow-sm border-0 h-100">
-                            <h6 class="card-title text-muted mb-3"><i class="fa-solid fa-chart-line me-1"></i> 報修種類量分析 (IssueType)</h6>
-                            <div class="chart-container">
-                                <canvas id="typeChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+				<div class="row g-3">
+					<div class="col-12 col-lg-6">
+						<div class="card p-3 shadow-sm border-0 h-100">
+							<h6 class="card-title text-muted mb-3">
+								<i class="fa-solid fa-chart-pie me-1"></i> 障礙真因分類統計
+								(IssueCategory)
+							</h6>
+							<div class="chart-container">
+								<canvas id="categoryChart"></canvas>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-lg-6">
+						<div class="card p-3 shadow-sm border-0 h-100">
+							<h6 class="card-title text-muted mb-3">
+								<i class="fa-solid fa-chart-line me-1"></i> 報修種類量分析 (IssueType)
+							</h6>
+							<div class="chart-container">
+								<canvas id="typeChart"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            <!-- B. 案件管理分頁 -->
-            <div id="casesContent" style="display: none;">
-                <div class="card p-3 shadow-sm border-0">
-                    <div class="row g-2 mb-3">
-                        <div class="col-12 col-md-4 col-lg-3">
-                            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="搜尋 IssueId, 聯絡人, 單位..." onkeyup="filterCases()">
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-2">
-                            <select id="statusFilter" class="form-select form-select-sm" onchange="filterCases()">
-                                <option value="">所有狀態</option>
-                                <option value="Open">未結案 (Open)</option>
-                                <option value="Closed">已結案 (Closed)</option>
-                            </select>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-2">
-                            <select id="categoryFilter" class="form-select form-select-sm" onchange="filterCases()">
-                                <option value="">所有真因分類</option>
-                                <option value="線路問題">線路問題</option>
-                                <option value="硬體問題">硬體問題</option>
-                                <option value="軟體問題">軟體問題</option>
-                                <option value="未分類">未分類</option>
-                            </select>
-                        </div>
-                    </div>
+			<!-- B. 案件管理分頁 -->
+			<div id="casesContent" style="display: none;">
+				<div class="card p-3 shadow-sm border-0">
+					<div class="row g-2 mb-3">
+						<div class="col-12 col-md-4 col-lg-3">
+							<input type="text" id="searchInput"
+								class="form-control form-control-sm"
+								placeholder="搜尋 IssueId, 聯絡人, 單位..." onkeyup="filterCases()">
+						</div>
+						<div class="col-6 col-md-4 col-lg-2">
+							<select id="statusFilter" class="form-select form-select-sm"
+								onchange="filterCases()">
+								<option value="">所有狀態</option>
+								<option value="Open">未結案 (Open)</option>
+								<option value="Closed">已結案 (Closed)</option>
+							</select>
+						</div>
+						<div class="col-6 col-md-4 col-lg-2">
+							<select id="categoryFilter" class="form-select form-select-sm"
+								onchange="filterCases()">
+								<option value="">所有真因分類</option>
+								<option value="線路問題">線路問題</option>
+								<option value="硬體問題">硬體問題</option>
+								<option value="軟體問題">軟體問題</option>
+								<option value="未分類">未分類</option>
+							</select>
+						</div>
+					</div>
 
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr class="text-nowrap">
-                                    <th>IssueId</th>
-                                    <th>時間</th>
-                                    <th>單位 / 聯絡人</th>
-                                    <th>種類</th>
-                                    <th>報修描述</th>
-                                    <th>狀態</th>
-                                    <th>真因分類</th>
-                                    <th>處置措施</th>
-                                    <th class="text-center">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="caseTableBody">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+					<div class="table-responsive">
+						<table class="table table-hover align-middle">
+							<thead class="table-light">
+								<tr class="text-nowrap">
+									<th>IssueId</th>
+									<th>時間</th>
+									<th>單位 / 聯絡人</th>
+									<th>種類</th>
+									<th>報修描述</th>
+									<th>狀態</th>
+									<th>真因分類</th>
+									<th>處置措施</th>
+									<th class="text-center">操作</th>
+								</tr>
+							</thead>
+							<tbody id="caseTableBody">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 
-        </div>
-    </div>
+		</div>
+	</div>
 
-    <!-- 編輯案件 Modal 彈窗 -->
-    <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: var(--primary-navy); color: white;">
-                    <h5 class="modal-title fs-6"><i class="fa-solid fa-pen-to-square me-2"></i>更新案件結案資訊</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <input type="hidden" id="modalIssueId">
-                        
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">報修單號</label>
-                            <input type="text" class="form-control form-control-sm bg-light" id="displayIssueId" readonly>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">報修描述 (Client 填寫)</label>
-                            <textarea class="form-control form-control-sm bg-light" id="displayDescription" rows="2" readonly></textarea>
-                        </div>
+	<!-- 編輯案件 Modal 彈窗 -->
+	<div class="modal fade" id="editModal" tabindex="-1">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header"
+					style="background-color: var(- -primary-navy); color: white;">
+					<h5 class="modal-title fs-6">
+						<i class="fa-solid fa-pen-to-square me-2"></i>更新案件結案資訊
+					</h5>
+					<button type="button" class="btn-close btn-close-white"
+						data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<form id="editForm">
+						<input type="hidden" id="modalIssueId">
 
-                        <hr class="my-2">
+						<div class="mb-3">
+							<label class="form-label text-muted small">報修單號</label> <input
+								type="text" class="form-control form-control-sm bg-light"
+								id="displayIssueId" readonly>
+						</div>
 
-                        <div class="mb-3">
-                            <label for="modalCaseClosed" class="form-label fw-bold small">結案狀態 (CaseClosed)</label>
-                            <select class="form-select form-select-sm" id="modalCaseClosed">
-                                <option value="false">未結案 (Open)</option>
-                                <option value="true">已結案 (Closed)</option>
-                            </select>
-                        </div>
+						<div class="mb-3">
+							<label class="form-label text-muted small">報修描述 (Client
+								填寫)</label>
+							<textarea class="form-control form-control-sm bg-light"
+								id="displayDescription" rows="2" readonly></textarea>
+						</div>
 
-                        <div class="mb-3">
-                            <label for="modalIssueCategory" class="form-label fw-bold small">障礙真因分類 (IssueCategory)</label>
-                            <select class="form-select form-select-sm" id="modalIssueCategory">
-                                <option value="未分類">未分類</option>
-                                <option value="線路問題">線路問題</option>
-                                <option value="硬體問題">硬體問題</option>
-                                <option value="軟體問題">軟體問題</option>
-                                <option value="人為操作">人為操作</option>
-                            </select>
-                        </div>
+						<hr class="my-2">
 
-                        <div class="mb-3">
-                            <label for="modalActionTaken" class="form-label fw-bold small">處置措施簡述 (ActionTaken)</label>
-                            <textarea class="form-control form-control-sm" id="modalActionTaken" rows="3" placeholder="請詳述處置方式..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer p-2">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-sm btn-gold" onclick="saveCaseAdminData()">儲存更新</button>
-                </div>
-            </div>
-        </div>
-    </div>
+						<div class="mb-3">
+							<label for="modalCaseClosed" class="form-label fw-bold small">結案狀態
+								(CaseClosed)</label> <select class="form-select form-select-sm"
+								id="modalCaseClosed">
+								<option value="false">未結案 (Open)</option>
+								<option value="true">已結案 (Closed)</option>
+							</select>
+						</div>
 
-    <!-- Bootstrap & JS 腳本 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+						<div class="mb-3">
+							<label for="modalIssueCategory" class="form-label fw-bold small">障礙真因分類
+								(IssueCategory)</label> <select class="form-select form-select-sm"
+								id="modalIssueCategory">
+								<option value="未分類">未分類</option>
+								<option value="線路問題">線路問題</option>
+								<option value="硬體問題">硬體問題</option>
+								<option value="軟體問題">軟體問題</option>
+								<option value="人為操作">人為操作</option>
+							</select>
+						</div>
+
+						<div class="mb-3">
+							<label for="modalActionTaken" class="form-label fw-bold small">處置措施簡述
+								(ActionTaken)</label>
+							<textarea class="form-control form-control-sm"
+								id="modalActionTaken" rows="3" placeholder="請詳述處置方式..."></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer p-2">
+					<button type="button" class="btn btn-sm btn-secondary"
+						data-bs-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-sm btn-gold"
+						onclick="saveCaseAdminData()">儲存更新</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap & JS 腳本 -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
         let casesData = [
             {
                 IssueId: "REQ-20260928-01",
