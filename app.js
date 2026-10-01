@@ -10,6 +10,8 @@ liff.init({ liffId: LIFF_ID }).then(() => {
 });
 
 document.getElementById('submitBtn').addEventListener('click', async () => {
+	console.log('submit button click');
+	
     const submitBtn = document.getElementById('submitBtn');
     const loadingOverlay = document.getElementById('loadingOverlay');
 
