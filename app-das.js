@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 監聽登入送出事件
 	document.getElementById('loginForm').addEventListener('submit', (e) => {
 		e.preventDefault();
+		
+		console.log('login form click event');
+		
 		// 切換 View
 		document.getElementById('loginView').classList.remove('active');
 		document.getElementById('dashboardView').classList.add('active');
