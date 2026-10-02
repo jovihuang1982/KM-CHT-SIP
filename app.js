@@ -10,9 +10,9 @@ liff.init({ liffId: LIFF_ID }).then(() => {
 });
 
 document.getElementById('submitBtn').addEventListener('click', async () => {
-	console.log('submit button click');
+	console.info('submit button click');
 	
-/*    const submitBtn = document.getElementById('submitBtn');
+    const submitBtn = document.getElementById('submitBtn');
     const loadingOverlay = document.getElementById('loadingOverlay');
 
     // 1. 取得必填欄位的值並去除前後空白
@@ -96,7 +96,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
         submitBtn.disabled = false;
         submitBtn.innerText = "送出回報";
         alert("送出發生錯誤，請稍後再試。");
-    }*/
+    }
 });
 
 function showSuccessAndClose() {
