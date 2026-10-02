@@ -9,9 +9,7 @@ liff.init({ liffId: LIFF_ID }).then(() => {
     console.log("LIFF 已初始化");
 });
 
-document.getElementById('submitBtn').addEventListener('click', async () => {
-	console.info('submit button click');
-	
+document.getElementById('submitBtn').addEventListener('click', async () => {	
     const submitBtn = document.getElementById('submitBtn');
     const loadingOverlay = document.getElementById('loadingOverlay');
 
