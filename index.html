@@ -1,65 +1,59 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>報修系統</title>
-<!-- 引入 LINE SDK 與 vConsole -->
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-<!-- 引入獨立的 CSS 樣式表 -->
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>報修系統</title>
+    <!-- 引入 LINE SDK 與 vConsole -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <!-- 引入獨立的 CSS 樣式表 -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container" id="mainContainer">
+        <h2>請輸入報修資訊</h2>
+        <div class="form-group">
+            <div class="field-container">
+                <label class="form-label" for="phone">網路電話分機 <span style="color: #ff4d4f;">*</span></label>
+                <input type="text" class="input-box" id="phone" placeholder="請輸入分機號碼">
+            </div>
+            
+            <div class="field-container">
+                <label class="form-label" for="department">申請單位 <span style="color: #ff4d4f;">*</span></label>
+                <input type="text" class="input-box" id="department" placeholder="請輸入單位名稱">
+            </div>
 
-	<!-- 引入獨立的 JS 邏輯檔 -->
-	<script src="app.js"></script>
-	<div class="container" id="mainContainer">
-		<h2>請輸入報修資訊</h2>
-		<div class="form-group">
-			<div class="field-container">
-				<label class="form-label" for="phone">網路電話分機 <span
-					style="color: #ff4d4f;">*</span></label> <input type="text"
-					class="input-box" id="phone" placeholder="請輸入分機號碼">
-			</div>
+            <div class="field-container">
+                <label class="form-label" for="contact">聯絡人 <span style="color: #ff4d4f;">*</span></label>
+                <input type="text" class="input-box" id="contact" placeholder="請輸入姓名/電話">
+            </div>
+      
+            <div class="field-container">
+                <label class="form-label" for="issueType">報修種類</label>
+                <select class="input-box" id="issueType">
+                    <option value="更改共振群組">更改共振群組</option>
+                    <option value="話機障礙">話機障礙</option>
+                </select>
+            </div>
 
-			<div class="field-container">
-				<label class="form-label" for="department">報修單位 <span
-					style="color: #ff4d4f;">*</span></label> <input type="text"
-					class="input-box" id="department" placeholder="請輸入單位名稱">
-			</div>
+            <!-- 障礙描述多行輸入框 -->
+            <div class="field-container full-width">
+                <label class="form-label" for="description">障礙描述 (選填)</label>
+                <textarea class="input-box" id="description" name="description" rows="3" placeholder="請簡述您遇到的問題..."></textarea>
+            </div>
 
-			<div class="field-container">
-				<label class="form-label" for="contact">聯絡人 <span
-					style="color: #ff4d4f;">*</span></label> <input type="text"
-					class="input-box" id="contact" placeholder="請輸入姓名/電話">
-			</div>
+            <button class="submit-btn full-width" id="submitBtn">送出回報</button>
+        </div>
+    </div>
+    
+    <!-- 全螢幕 Loading 遮罩 -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-family: sans-serif;">
+        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #06C755; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; font-size: 16px; font-weight: bold;">正在傳送中，請稍候...</p>
+    </div>
 
-			<div class="field-container">
-				<label class="form-label" for="issueType">報修種類</label> <select
-					class="input-box" id="issueType">
-					<option value="更改共振群組">更改共振群組</option>
-					<option value="話機障礙">話機障礙</option>
-				</select>
-			</div>
-
-			<!-- 障礙描述多行輸入框 -->
-			<div class="field-container full-width">
-				<label class="form-label" for="description">障礙描述 (選填)</label>
-				<textarea class="input-box" id="description" name="description"
-					rows="3" placeholder="請簡述您遇到的問題..."></textarea>
-			</div>
-
-			<button class="submit-btn full-width" id="submitBtn">送出回報</button>
-		</div>
-	</div>
-
-	<!-- 全螢幕 Loading 遮罩 -->
-	<div id="loadingOverlay"
-		style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-family: sans-serif;">
-		<div
-			style="border: 4px solid #f3f3f3; border-top: 4px solid #06C755; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
-		<p style="margin-top: 15px; font-size: 16px; font-weight: bold;">正在傳送中，請稍候...</p>
-	</div>
+    <!-- 引入獨立的 JS 邏輯檔 -->
+    <script src="app.js"></script>
 </body>
 </html>
