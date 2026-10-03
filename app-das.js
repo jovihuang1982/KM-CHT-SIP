@@ -103,7 +103,7 @@ async function verifyLogin() {
 		
 		console.log('result: ' + result );
 
-		return (result.status === "success");
+		return (result.status === "200");
 	} catch (err) {
 		return false;
 	}
