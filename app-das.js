@@ -97,7 +97,7 @@ async function verifyLogin() {
 		
 		if (response.ok) {
 			console.log('login successfully');
-			return true;
+			return false;
 		} else {
 			console.log('login failed');
 			return false;
