@@ -55,14 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	editModalObj = new bootstrap.Modal(document.getElementById('editModal'));
 
 	// 監聽登入送出事件
-	document.getElementById('loginForm').addEventListener('submit', (e) => {
+	document.getElementById('loginForm').addEventListener('submit', async (e) => {
 		e.preventDefault();
-		
-		var isLogin = verifyLogin();
-		
-		console.log('isLogin:' + isLogin);
 
-		if (isLogin) {
+		const isValid = await verifyLogin();
+
+		if (isValid) {
+			alert("登入成功！");
+
 			// 切換 View
 			document.getElementById('loginView').classList.remove('active');
 			document.getElementById('dashboardView').classList.add('active');
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			initCharts();
 		} else {
 			// should be replaced by a login fail page
-			console.log('login failed');
+			alert("帳號或密碼錯誤，請重新輸入。");
 		}
 	});
 });
@@ -98,16 +98,11 @@ async function verifyLogin() {
 				"Content-Type": "text/plain;charset=utf-8"
 			}
 		});
-		
-		if (response.ok) {
-			return false;
-		} else {
-			console.log('login failed');
-			return false;
-		}
+
+		const result = await response.json();
+
+		return (result.status === "success");
 	} catch (err) {
-		console.error("捕捉到錯誤:", err);
-	} finally {
 		return false;
 	}
 }
