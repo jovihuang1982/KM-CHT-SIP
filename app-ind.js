@@ -1,7 +1,7 @@
 // 初始化 vConsole, for debug
 var vConsole = new window.VConsole();
 
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzEIZS_LKerS1ukarzaIsXgIR1TuTTk262ApTTw8Vu6Q5RRqzSYd_OvzvG4NWTeTFTocg/exec";        
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbztn7bnD6MY94HzGKklU9UcksayOkDRxf2aKkUd0RVJpl8Z9wyN9cBB9mi72FOnJYSMUw/exec";        
 const LIFF_ID = '2011447440-TpOhGOzi';
 
 // 初始化 LIFF
@@ -50,6 +50,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
 
         // 7. 準備 Payload 資料包
         const payload = {
+			action: 'new_issue',
             userId: profile.userId,
             userName: profile.displayName,
             phone: phone,
