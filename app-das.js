@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function verifyLogin() {
-	var userName = document.getElementById('username');
-	var password = document.getElementById('password');
+	var userName = document.getElementById('username').value;
+	var password = document.getElementById('password').value;
 
 	console.log('username: ' + userName + ' password: ' + password);
 
