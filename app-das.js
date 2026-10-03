@@ -1,4 +1,7 @@
 
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbztn7bnD6MY94HzGKklU9UcksayOkDRxf2aKkUd0RVJpl8Z9wyN9cBB9mi72FOnJYSMUw/exec";
+const LIFF_ID = '2011447440-TpOhGOzi';
+
 let casesData = [
 	{
 		IssueId: "REQ-20260928-01",
@@ -70,13 +73,41 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 });
 
-function verifyLogin() {
+async function verifyLogin() {
 	var userName = document.getElementById('username').value;
 	var password = document.getElementById('password').value;
 
 	console.log('username: ' + userName + ' password: ' + password);
 
-	return false;
+	const payload = {
+		action: 'verify_login',
+		userName: userName,
+		password: password
+	};
+
+	try {
+		// 8. 發送 Fetch 請求到 GAS
+		const response = await fetch(GAS_WEB_APP_URL, {
+			method: "POST",
+			body: JSON.stringify(payload),
+			headers: {
+				"Content-Type": "text/plain;charset=utf-8"
+			},
+			mode: 'cors'
+		});
+		
+		if (response.ok) {
+			console.log('login successfully');
+			return true;
+		} else {
+			console.log('login failed');
+			return false;
+		}
+	} catch (err) {
+		console.error("捕捉到錯誤:", err);
+	} finally {
+		return false;
+	}
 }
 
 function switchTab(tab) {
