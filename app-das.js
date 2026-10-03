@@ -57,8 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 監聽登入送出事件
 	document.getElementById('loginForm').addEventListener('submit', (e) => {
 		e.preventDefault();
+		
+		var isLogin = verifyLogin();
+		
+		console.log('isLogin:' + isLogin);
 
-		if (verifyLogin()) {
+		if (isLogin) {
 			// 切換 View
 			document.getElementById('loginView').classList.remove('active');
 			document.getElementById('dashboardView').classList.add('active');
@@ -96,7 +100,6 @@ async function verifyLogin() {
 		});
 		
 		if (response.ok) {
-			console.log('login successfully');
 			return false;
 		} else {
 			console.log('login failed');
