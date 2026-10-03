@@ -92,8 +92,7 @@ async function verifyLogin() {
 			body: JSON.stringify(payload),
 			headers: {
 				"Content-Type": "text/plain;charset=utf-8"
-			},
-			mode: 'cors'
+			}
 		});
 		
 		if (response.ok) {
