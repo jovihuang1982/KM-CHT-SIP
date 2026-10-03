@@ -100,6 +100,8 @@ async function verifyLogin() {
 		});
 
 		const result = await response.json();
+		
+		console.log('result: ' + result );
 
 		return (result.status === "success");
 	} catch (err) {
