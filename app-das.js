@@ -101,7 +101,7 @@ async function verifyLogin() {
 
 		const result = await response.json();
 		
-		console.log('result: ' + result );
+		console.log('result: ' + result.status );
 
 		return (result.status === "200");
 	} catch (err) {
