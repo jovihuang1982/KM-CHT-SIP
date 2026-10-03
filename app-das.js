@@ -94,9 +94,9 @@ async function verifyLogin() {
 		const response = await fetch(GAS_WEB_APP_URL, {
 			method: "POST",
 			body: JSON.stringify(payload),
-			headers: {
-				"Content-Type": "text/plain;charset=utf-8"
-			}
+//			headers: {
+//				"Content-Type": "text/plain;charset=utf-8"
+//			}
 		});
 
 		const result = await response.json();
