@@ -54,18 +54,30 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 監聽登入送出事件
 	document.getElementById('loginForm').addEventListener('submit', (e) => {
 		e.preventDefault();
-		
-		console.log('login form click event');
-		
-		// 切換 View
-		document.getElementById('loginView').classList.remove('active');
-		document.getElementById('dashboardView').classList.add('active');
 
-		// 載入表格與圖表
-		renderTable(casesData);
-		initCharts();
+		if (verifyLogin()) {
+			// 切換 View
+			document.getElementById('loginView').classList.remove('active');
+			document.getElementById('dashboardView').classList.add('active');
+
+			// 載入表格與圖表
+			renderTable(casesData);
+			initCharts();
+		} else {
+			// should be replaced by a login fail page
+			console.log('login failed');
+		}
 	});
 });
+
+function verifyLogin() {
+	var userName = document.getElementById('username');
+	var password = document.getElementById('password');
+
+	console.log('username: ' + userName + ' password: ' + password);
+
+	return false;
+}
 
 function switchTab(tab) {
 	document.getElementById('tabAnalytics').classList.remove('active');

@@ -50,7 +50,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
 
         // 7. 準備 Payload 資料包
         const payload = {
-			action: 'newssue',
+			action: 'new_issue',
             userId: profile.userId,
             userName: profile.displayName,
             phone: phone,
