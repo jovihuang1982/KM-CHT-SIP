@@ -71,10 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function verifyLogin() {
-	const userName = document.getElementById('username').value;
-	const password = document.getElementById('password').value;
+	var userName = document.getElementById('username').value;
+	var password = document.getElementById('password').value;
 
-	console.log('username1: ' + userName + ' password1: ' + password);
+	console.log('username: ' + userName + ' password: ' + password);
 
 	return false;
 }
