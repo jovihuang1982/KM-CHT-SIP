@@ -1,5 +1,5 @@
 
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyLJSWVovmIrnXQyUSkh4JbJdv7ROmU384a6MxX1QAwyLxfIJy7g44ndPPg_DNuT-nJng/exec";
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxOU0CmkYAZl4ZIOM83y5gyXHPS3pA_XP8BoAxEBwkIlg9zcwE2YWfyT2vf7pswyQhQxA/exec";
 const LIFF_ID = '2011447440-TpOhGOzi';
 
 let casesData = [
