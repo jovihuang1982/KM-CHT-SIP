@@ -1,7 +1,7 @@
 // 初始化 vConsole, for debug
 var vConsole = new window.VConsole();
 
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuruleYZ5jwmFaUqX6sIKVC-CPvGvwhNYtmTVrta2JuO2kyeTlPSSK-DUM103WmheVYQ/exec";        
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzoLxr5BDSXVm2EDTvu3n-U693N0wBkaDC99XJCvB7gOJzP4mOpH7fGuGNfHp9uQ3t_QQ/exec";        
 const LIFF_ID = '2011447440-TpOhGOzi';
 
 // 初始化 LIFF
