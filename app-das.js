@@ -102,6 +102,8 @@ async function verifyLogin() {
 		const result = await response.json();
 		
 		console.log('result: ' + result.status);
+		
+		localStorage.setItem('token', result.token);
 
 		return (result.status === "200");
 	} catch (err) {
