@@ -28,7 +28,8 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
         // 3. 確保使用者已登入
         if (!liff.isLoggedIn()) { 
             liff.login(); 
-            return; 
+            console.log('not login');
+            // return; 
         }
 
         // 4. 顯示全螢幕 Loading 遮罩並鎖定按鈕
